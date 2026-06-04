@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Weight Loss Checkout — Screen Index</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: #f5f6f8;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    color: #1d1d1b;
+    -webkit-font-smoothing: antialiased;
+  }
+  .page {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 56px 24px 80px;
+  }
+  header { margin-bottom: 32px; }
+  header h1 {
+    margin: 0 0 8px;
+    font-size: 30px;
+    font-weight: 800;
+    color: #05054b;
+    letter-spacing: -0.02em;
+  }
+  header p {
+    margin: 0;
+    font-size: 15px;
+    color: #6b6b6b;
+    line-height: 1.5;
+  }
+
+  .tip {
+    background: #eef0fa;
+    color: #1a1a6e;
+    padding: 14px 16px;
+    border-radius: 12px;
+    font-size: 13px;
+    line-height: 1.5;
+    margin: 20px 0 28px;
+  }
+  .tip strong { display: block; margin-bottom: 4px; font-weight: 700; }
+
+  .actions {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+  }
+  .btn-bulk {
+    background: #05054b;
+    color: #fff;
+    border: 0;
+    border-radius: 999px;
+    padding: 12px 18px;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .btn-bulk:hover { background: #1a1a6e; }
+  .btn-bulk.secondary {
+    background: #fff;
+    color: #05054b;
+    border: 1px solid #d4d4d4;
+  }
+  .btn-bulk.secondary:hover { background: #f5f6f8; }
+
+  .section {
+    margin-top: 32px;
+  }
+  .section-title {
+    font-size: 11px;
+    font-weight: 700;
+    color: #6b6b6b;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    margin-bottom: 8px;
+    padding-left: 4px;
+  }
+
+  .list {
+    background: #fff;
+    border: 1px solid #e6e6e6;
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    border-bottom: 1px solid #eee;
+    text-decoration: none;
+    color: inherit;
+    transition: background .12s ease;
+  }
+  .row:last-child { border-bottom: 0; }
+  .row:hover { background: #f9fafb; }
+  .row .num {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: #eef0fa;
+    color: #05054b;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .row .info { flex: 1; min-width: 0; }
+  .row .info-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1d1d1b;
+    margin-bottom: 2px;
+  }
+  .row .info-sub {
+    font-size: 12px;
+    color: #6b6b6b;
+    line-height: 1.4;
+  }
+  .row .arrow {
+    color: #9a9a9a;
+    flex-shrink: 0;
+  }
+  .row:hover .arrow { color: #05054b; }
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <h1>Screen index for Miro export</h1>
+    <p>Each row below opens that single screen in its own tab. Take a full-page screenshot of each one, then drag into Miro.</p>
+  </header>
+
+  <div class="tip">
+    <strong>How to capture a clean screenshot</strong>
+    Open a screen, then in Chrome/Edge press <code>Cmd+Shift+P</code> → type "screenshot" → choose <em>"Capture full size screenshot"</em>. The PNG saves to your Downloads. Drag it straight into Miro.
+  </div>
+
+  <div class="actions">
+    <button class="btn-bulk" id="open-all">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3h7v7M10 21H3v-7M21 3l-9 9M3 21l9-9"/></svg>
+      Open all 16 screens in new tabs
+    </button>
+    <a class="btn-bulk secondary" href="index.html" target="_blank">
+      Open interactive prototype ↗
+    </a>
+  </div>
+
+  <div class="section">
+    <div class="section-title">1 · Recommendation</div>
+    <div class="list" id="list-1"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">2 · Choose treatment</div>
+    <div class="list" id="list-2"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">3 · Fulfilment</div>
+    <div class="list" id="list-3"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">4 · Add payment method</div>
+    <div class="list" id="list-4"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">5 · After payment</div>
+    <div class="list" id="list-5"></div>
+  </div>
+</div>
+
+<script>
+  const SECTIONS = {
+    1: [
+      { hash: 'loading',           title: 'Loading screen',                  sub: 'Personalised recommendation in progress' },
+    ],
+    2: [
+      { hash: 'product',           title: 'Product selection',               sub: 'Four treatments, high-level info' },
+      { hash: 'pdp',               title: 'Product details (PDP)',           sub: 'Full Mounjaro PDP with rich content + price' },
+    ],
+    3: [
+      { hash: 'fulfilment',        title: 'Fulfilment — initial',            sub: 'Both options visible, nothing selected' },
+      { hash: 'fulfilment-home',   title: 'Home delivery selected',          sub: 'Card selected with "Add address" button' },
+      { hash: 'address-lookup',    title: 'Address overlay — postcode lookup', sub: 'User enters postcode, sees address list' },
+      { hash: 'address-delivery',  title: 'Address overlay — delivery options', sub: 'After address selected — Next Day / Standard' },
+      { hash: 'fulfilment-complete', title: 'Fulfilment complete — Home',    sub: 'Address + delivery summary, Continue active' },
+      { hash: 'store-search',      title: 'Store overlay — search',          sub: 'Boots store finder with results' },
+      { hash: 'fulfilment-store',  title: 'Fulfilment complete — Store',     sub: 'Store selected with summary chip' },
+    ],
+    4: [
+      { hash: 'payment',           title: 'Payment — initial',               sub: 'Three methods stacked, no selection yet' },
+      { hash: 'payment-apple',     title: 'Apple Pay selected',              sub: 'CTA reads "Continue to Auth with Apple Pay"' },
+      { hash: 'payment-card',      title: 'Card payment selected',           sub: 'Inline card form revealed' },
+      { hash: 'apple-auth',        title: 'Apple Pay auth popup',            sub: '"Double-Click to Pay" + £0.00 verification' },
+    ],
+    5: [
+      { hash: 'processing',        title: 'Processing',                      sub: 'Securing the order — handoff to clinical review' },
+      { hash: 'confirmation',      title: 'Payment set up',                  sub: 'Treatment & payment saved — what user must do next' },
+    ],
+  };
+
+  let counter = 0;
+  function urlFor(hash) {
+    return `index.html?embed=1#${hash}`;
+  }
+
+  Object.entries(SECTIONS).forEach(([sec, items]) => {
+    const container = document.getElementById('list-' + sec);
+    items.forEach(item => {
+      counter++;
+      const a = document.createElement('a');
+      a.className = 'row';
+      a.href = urlFor(item.hash);
+      a.target = '_blank';
+      a.rel = 'noopener';
+      a.innerHTML = `
+        <span class="num">${counter}</span>
+        <div class="info">
+          <div class="info-title">${item.title}</div>
+          <div class="info-sub">${item.sub}</div>
+        </div>
+        <svg class="arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M7 7h10v10"/></svg>
+      `;
+      container.appendChild(a);
+    });
+  });
+
+  document.getElementById('open-all').addEventListener('click', () => {
+    const ok = confirm('This will open 16 tabs. Continue?');
+    if (!ok) return;
+    Object.values(SECTIONS).flat().forEach((item, i) => {
+      // Stagger so the browser doesn't drop popup-blocked tabs
+      setTimeout(() => window.open(urlFor(item.hash), '_blank'), i * 80);
+    });
+  });
+</script>
+</body>
+</html>
