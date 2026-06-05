@@ -11477,42 +11477,44 @@ function progressPercent(step) {
 //        medical assessment, 2 = treatment & payment, 3 = post-payment).
 // pct:   how far through the active segment (0-100) this step sits.
 const PHASE_MAP = {
-  // Phase 1 — About you & medical questions
-  'q-experience':       { phase: 1, label: 'About you',      pct: 12 },
-  'right-place':        { phase: 1, label: 'About you',      pct: 18 },
-  'q-reasons':          { phase: 1, label: 'About you',      pct: 26 },
-  'q-intro':            { phase: 1, label: 'About you',      pct: 38 },
-  'disclaimer':         { phase: 1, label: 'About you',      pct: 50 },
-  'q-height-weight':    { phase: 1, label: 'About you',      pct: 62 },
-  'q-gender':           { phase: 1, label: 'About you',      pct: 72 },
-  'q-ethnicity':        { phase: 1, label: 'About you',      pct: 82 },
-  'q-name':             { phase: 1, label: 'About you',      pct: 88 },
-  'q-medical-tbd':      { phase: 1, label: 'About you',      pct: 94 },
-  'analysing':          { phase: 1, label: 'About you',      pct: 100 },
-  // Phase 2 — Treatment selection, fulfilment & payment
-  'product':            { phase: 2, label: 'Treatment plan', pct: 14 },
-  'product-details':    { phase: 2, label: 'Treatment plan', pct: 28 },
-  'upsell':             { phase: 2, label: 'Treatment plan', pct: 40 },
-  'product-upsell':     { phase: 2, label: 'Treatment plan', pct: 46 },
-  'create-account':     { phase: 2, label: 'Treatment plan', pct: 52 },
-  'account-details':    { phase: 2, label: 'Treatment plan', pct: 58 },
-  'account-processing': { phase: 2, label: 'Treatment plan', pct: 64 },
-  'fulfilment':         { phase: 2, label: 'Treatment plan', pct: 76 },
-  'payment':            { phase: 2, label: 'Treatment plan', pct: 90 },
-  'processing':         { phase: 2, label: 'Treatment plan', pct: 100 },
-  // Phase 3 — Post-payment: ID, photos, submission
-  'confirmation':       { phase: 3, label: 'Verification',   pct: 10 },
-  'gp':                 { phase: 3, label: 'Verification',   pct: 26, stepTitle: 'Add GP' },
-  'id-verify':          { phase: 3, label: 'Verification',   pct: 42 },
-  'photos-intro':       { phase: 3, label: 'Verification',   pct: 55 },
-  'photos-front-guide': { phase: 3, label: 'Verification',   pct: 60 },
-  'photos-side-guide':  { phase: 3, label: 'Verification',   pct: 65 },
-  'photos-front':       { phase: 3, label: 'Verification',   pct: 74 },
-  'photos-side':        { phase: 3, label: 'Verification',   pct: 84 },
-  'review-submit':      { phase: 3, label: 'Verification',   pct: 93 },
-  'clinician-submit':   { phase: 3, label: 'Verification',   pct: 99 },
-  'submitting':         { phase: 3, label: 'Verification',   pct: 100 },
-  'account':            { phase: 3, label: 'Verification',   pct: 100 },
+  // Phase 1 — About you
+  'q-experience':       { phase: 1, label: 'About You',      pct: 12 },
+  'right-place':        { phase: 1, label: 'About You',      pct: 18 },
+  'q-reasons':          { phase: 1, label: 'About You',      pct: 26 },
+  'q-intro':            { phase: 1, label: 'About You',      pct: 38 },
+  'disclaimer':         { phase: 1, label: 'About You',      pct: 50 },
+  'q-height-weight':    { phase: 1, label: 'About You',      pct: 62 },
+  'q-gender':           { phase: 1, label: 'About You',      pct: 72 },
+  'q-ethnicity':        { phase: 1, label: 'About You',      pct: 82 },
+  'q-name':             { phase: 1, label: 'About You',      pct: 88 },
+  // Phase 1.5 — Medical History
+  'q-medical-tbd':      { phase: 1, label: 'Medical History',pct: 94 },
+  'analysing':          { phase: 1, label: 'Medical History',pct: 100 },
+  // Phase 2 — Treatment & Order
+  'product':            { phase: 2, label: 'Your Treatment', pct: 14 },
+  'product-details':    { phase: 2, label: 'Your Treatment', pct: 28 },
+  'upsell':             { phase: 2, label: 'Your Treatment', pct: 40 },
+  'product-upsell':     { phase: 2, label: 'Your Treatment', pct: 46 },
+  'create-account':     { phase: 2, label: 'Your Order',    pct: 52 },
+  'account-details':    { phase: 2, label: 'Your Order',    pct: 58 },
+  'account-processing': { phase: 2, label: 'Your Order',    pct: 64 },
+  'fulfilment':         { phase: 2, label: 'Your Order',    pct: 76 },
+  'payment':            { phase: 2, label: 'Your Order',    pct: 90 },
+  'processing':         { phase: 2, label: 'Your Order',    pct: 100 },
+  // Phase 3 — Details
+  'confirmation':       { phase: 3, label: 'Your Details',   pct: 10 },
+  'gp':                 { phase: 3, label: 'Your Details',   pct: 26, stepTitle: 'Add GP' },
+  'gp-disclaimer':      { phase: 3, label: 'Your Details',   pct: 32 },
+  'id-verify':          { phase: 3, label: 'Your Details',   pct: 42 },
+  'photos-intro':       { phase: 3, label: 'Your Details',   pct: 55 },
+  'photos-front-guide': { phase: 3, label: 'Your Details',   pct: 60 },
+  'photos-side-guide':  { phase: 3, label: 'Your Details',   pct: 65 },
+  'photos-front':       { phase: 3, label: 'Your Details',   pct: 74 },
+  'photos-side':        { phase: 3, label: 'Your Details',   pct: 84 },
+  'review-submit':      { phase: 3, label: 'Your Details',   pct: 93 },
+  'clinician-submit':   { phase: 3, label: 'Your Details',   pct: 99 },
+  'submitting':         { phase: 3, label: 'Your Details',   pct: 100 },
+  'account':            { phase: 3, label: 'Your Details',   pct: 100 },
 };
 
 // Section labels for the bottom nav progress bar
@@ -11712,10 +11714,12 @@ function render() {
 // the footer first appears at q-reasons the user is already in phase 2.
 function journeyPhase(step) {
   const PHASES = [
-    { label: 'Get started',  steps: ['q-experience'] },
-    { label: 'About you',    steps: ['q-reasons','disclaimer','q-height-weight','q-gender','q-ethnicity','q-name','q-medical-tbd','analysing'] },
-    { label: 'Treatment',    steps: ['product','product-details','upsell','product-upsell','create-account','account-details','account-processing','fulfilment','payment','processing','confirmation'] },
-    { label: 'Verification', steps: ['gp','gp-disclaimer','id-verify','photos-intro','photos-front-guide','photos-front','photos-side-guide','photos-side','review-submit','clinician-submit','submitting','account'] },
+    { label: 'Get started',     steps: ['q-experience'] },
+    { label: 'About You',       steps: ['q-reasons','disclaimer','q-height-weight','q-gender','q-ethnicity','q-name'] },
+    { label: 'Medical History', steps: ['q-medical-tbd','analysing'] },
+    { label: 'Your Treatment',  steps: ['product','product-details','upsell','product-upsell'] },
+    { label: 'Your Order',      steps: ['create-account','account-details','account-processing','fulfilment','payment','processing','confirmation'] },
+    { label: 'Your Details',    steps: ['gp','gp-disclaimer','id-verify','photos-intro','photos-front-guide','photos-front','photos-side-guide','photos-side','review-submit','clinician-submit','submitting','account'] },
   ];
   for (let i = 0; i < PHASES.length; i++) {
     const idx = PHASES[i].steps.indexOf(step);
