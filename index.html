@@ -8856,49 +8856,75 @@
     display: flex; flex-direction: column; gap: 12px; width: 100%;
   }
   /* Method card */
-  .ca-method {
-    display: flex; gap: 16px; align-items: center;
-    border: 2px solid var(--bod-line); border-radius: 8px;
-    padding: 16px; width: 100%; box-sizing: border-box;
-    cursor: pointer; background: #fff;
-    transition: background .12s, border-color .12s;
+  /* ── Payment method buttons (unselected state) ── */
+  .pm-btn {
+    display: flex; align-items: center; justify-content: center;
+    height: 48px; width: 100%; border-radius: 10px;
+    cursor: pointer; border: 0; font: inherit;
+    box-sizing: border-box; flex-shrink: 0;
   }
-  .ca-method:hover { border-color: var(--bod-navy); }
-  .ca-method.selected {
+  .pm-btn-apple {
+    background: #000; color: #fff;
+    font-size: 17px; font-weight: 500; letter-spacing: 0.3px;
+  }
+  .pm-btn-paypal { background: #ffc43a; gap: 6px; }
+  .pm-btn-card {
+    background: #2d2f2f; color: #fff;
+    font-size: 16px; font-weight: 400;
+  }
+
+  /* ── Selected payment method row ── */
+  .pm-selected {
+    display: flex; align-items: center; gap: 12px;
     background: var(--bod-pale-blue);
     border: 3px solid var(--bod-navy);
-    padding: 15px;   /* compensate thicker border */
+    border-radius: 8px; padding: 16px;
+    box-sizing: border-box; width: 100%;
   }
-  /* Right-hand green tick — shown when the method is selected (Figma 32:1459).
-     Matches the app-wide "selected" affordance. */
-  .ca-method-check {
+  .pm-selected-name {
+    flex: 1; font-size: 16px; line-height: 24px;
+    letter-spacing: 0.2px; font-weight: 400; color: var(--bod-navy);
+  }
+  .pm-selected-icon {
+    background: #000; border-radius: 4px;
+    width: 64px; padding: 10px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .pm-selected-icon-paypal {
+    background: #ffc43a; border-radius: 4px;
+    width: 64px; padding: 10px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .pm-selected-icon-card {
+    background: #2d2f2f; border-radius: 4px;
+    width: 64px; padding: 10px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .pm-selected-check {
     width: 24px; height: 24px; border-radius: 50%;
     background: var(--bod-success); flex-shrink: 0;
-    display: none; align-items: center; justify-content: center;
-  }
-  .ca-method.selected .ca-method-check { display: flex; }
-  /* Text block */
-  .ca-method-text { flex: 1 0 0; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
-  .ca-method-titlerow { display: flex; gap: 8px; align-items: center; }
-  .ca-method-title {
-    font-size: 16px; line-height: 24px; letter-spacing: 0.2px;
-    font-weight: 400; color: var(--bod-navy); white-space: nowrap;
-  }
-  .ca-method-badge {
-    border: 1px solid var(--bod-navy); border-radius: 4px;
-    padding: 2px 6px; font-size: 12px; line-height: 1; color: var(--bod-navy);
-    white-space: nowrap;
-  }
-  .ca-method-sub {
-    font-size: 11px; line-height: 16px; letter-spacing: 0.1px;
-    color: var(--bod-navy);
-  }
-  /* Right-hand brand icon */
-  .ca-method-icon {
-    width: 48px; height: 32px; flex-shrink: 0;
     display: flex; align-items: center; justify-content: center;
   }
-  .ca-method-icon svg { max-width: 100%; max-height: 100%; }
+
+  /* ── Payment method header row ── */
+  .pm-header-row {
+    display: flex; align-items: center;
+    justify-content: space-between; gap: 8px;
+    width: 100%;
+  }
+  .pm-header-title {
+    font-size: 14px; font-weight: 700; line-height: 20px;
+    letter-spacing: 0.1px; color: var(--bod-navy);
+  }
+  .pm-header-change {
+    background: none; border: 0; padding: 0; cursor: pointer;
+    font: inherit; font-size: 14px; letter-spacing: 0.1px;
+    color: var(--bod-navy); text-decoration: underline;
+    text-underline-offset: 2px; flex-shrink: 0;
+  }
   .account-benefits-list {
     margin: 0;
     padding: 0;
@@ -16746,28 +16772,20 @@ function renderPayment(root) {
   const welcomeApplied = (state.promoCode || '').trim().toUpperCase() === 'WELCOME10';
   const advantageApplied = !!(state.advantageNumber || '').trim();
   const pmCheck = `<svg width="14" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
-  const PM_ICONS = {
-    apple: `<svg width="22" height="26" viewBox="0 0 24 24" fill="#000"><path d="M17.05 12.04c-.03-3.13 2.55-4.63 2.67-4.7-1.46-2.13-3.73-2.43-4.54-2.46-1.93-.2-3.77 1.13-4.75 1.13-1 0-2.49-1.11-4.1-1.08-2.1.03-4.07 1.23-5.15 3.1-2.21 3.83-.56 9.46 1.57 12.55 1.05 1.51 2.29 3.2 3.91 3.14 1.58-.06 2.18-1.02 4.09-1.02 1.91 0 2.45 1.02 4.1.99 1.7-.03 2.78-1.53 3.81-3.06 1.21-1.75 1.71-3.46 1.73-3.55-.04-.02-3.31-1.26-3.34-5.04zm-3.13-9.27c.87-1.05 1.45-2.5 1.29-3.95-1.25.05-2.76.83-3.65 1.88-.81.92-1.51 2.4-1.32 3.81 1.39.11 2.81-.71 3.68-1.74z"/></svg>`,
-    paypal: `<svg width="44" height="18" viewBox="0 0 100 28"><text x="0" y="22" font-family="Inter, Arial" font-weight="800" font-size="22" letter-spacing="-0.5" fill="#003087">Pay</text><text x="42" y="22" font-family="Inter, Arial" font-weight="800" font-size="22" letter-spacing="-0.5" fill="#009cde">Pal</text></svg>`,
-    card: `<svg viewBox="0 0 36 24" width="40" height="26"><rect x="0" y="0" width="36" height="24" rx="3" fill="#1a1f71"/><text x="18" y="16" text-anchor="middle" fill="#fff" font-family="Inter" font-weight="800" font-size="9">VISA</text></svg>`,
-  };
+  const appleIconSvg = `<svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M17.05 12.04c-.03-3.13 2.55-4.63 2.67-4.7-1.46-2.13-3.73-2.43-4.54-2.46-1.93-.2-3.77 1.13-4.75 1.13-1 0-2.49-1.11-4.1-1.08-2.1.03-4.07 1.23-5.15 3.1-2.21 3.83-.56 9.46 1.57 12.55 1.05 1.51 2.29 3.2 3.91 3.14 1.58-.06 2.18-1.02 4.09-1.02 1.91 0 2.45 1.02 4.1.99 1.7-.03 2.78-1.53 3.81-3.06 1.21-1.75 1.71-3.46 1.73-3.55-.04-.02-3.31-1.26-3.34-5.04zm-3.13-9.27c.87-1.05 1.45-2.5 1.29-3.95-1.25.05-2.76.83-3.65 1.88-.81.92-1.51 2.4-1.32 3.81 1.39.11 2.81-.71 3.68-1.74z"/></svg>`;
+  const paypalLogoSvg = `<svg width="64" height="18" viewBox="0 0 140 32"><text x="0" y="24" font-family="Arial" font-weight="900" font-size="26" letter-spacing="-1" fill="#003087">Pay</text><text x="56" y="24" font-family="Arial" font-weight="900" font-size="26" letter-spacing="-1" fill="#009cde">Pal</text></svg>`;
+  const cardIconSvg = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>`;
   const PM_META = {
-    apple:  { title: 'Apple Pay',    sub: 'Use your Apple ID, Hide My Email supported' },
-    paypal: { title: 'PayPal',       sub: 'Pay securely with your PayPal account' },
-    card:   { title: 'Card payment', sub: 'Visa, Mastercard, Amex' },
+    apple:  { title: 'Apple Pay' },
+    paypal: { title: 'PayPal' },
+    card:   { title: 'Debit or Credit Card' },
   };
-  const pmCard = (k) => `
-      <div class="ca-method ${state.paymentMethod === k ? 'selected' : ''}" data-pm="${k}" role="button" tabindex="0">
-        <div class="ca-method-text">
-          <div class="ca-method-titlerow"><span class="ca-method-title">${PM_META[k].title}</span></div>
-          <div class="ca-method-sub">${PM_META[k].sub}</div>
-        </div>
-        <div class="ca-method-icon">${PM_ICONS[k]}</div>
-        <div class="ca-method-check">${pmCheck}</div>
-      </div>`;
-  const PM_CARDS = { apple: pmCard('apple'), paypal: pmCard('paypal'), card: pmCard('card') };
+  const PM_SELECTED_ICONS = {
+    apple:  `<div class="pm-selected-icon">${appleIconSvg}</div>`,
+    paypal: `<div class="pm-selected-icon-paypal">${paypalLogoSvg}</div>`,
+    card:   `<div class="pm-selected-icon-card">${cardIconSvg}</div>`,
+  };
   const allMethods = ['apple', 'paypal', 'card'];
-  const visibleMethods = state.paymentMethod ? [state.paymentMethod] : allMethods;
 
   // Fulfilment must be picked AND have address/store data before payment can be selected
   const storeSel = state.fulfilment === 'store';
@@ -16827,22 +16845,24 @@ function renderPayment(root) {
     ` : ''}
 
     ${!fulfilmentComplete ? '' : `
-    <div class="pay-select-card">
-      <div class="section-h">
-        <span>Select your payment method</span>
-        ${state.paymentMethod ? `<button type="button" class="section-h-change" id="btn-change-pm">Change</button>` : ''}
-      </div>
-      <p class="section-sub">Payment will be taken after our clinician approves your treatment.</p>
+    <div class="pm-header-row">
+      <span class="pm-header-title">Select your payment method</span>
+      ${state.paymentMethod ? `<button type="button" class="pm-header-change" id="btn-change-pm">Change</button>` : ''}
     </div>
+    <p style="font-size:14px;line-height:20px;letter-spacing:0.1px;color:var(--bod-navy);margin:0;">Payment will be taken after our clinician approves your treatment.</p>
 
-    ${state.paymentMethod === 'card' ? `
-      <div class="pm-card-group selected">
-        ${PM_CARDS.card}
-        <div id="card-form" class="pm-card-form">
-          ${renderCardForm()}
-        </div>
+    ${!state.paymentMethod ? `
+      <button type="button" class="pm-btn pm-btn-apple" data-pm="apple">Pay with &#xF8FF;Pay</button>
+      <button type="button" class="pm-btn pm-btn-paypal" data-pm="paypal">${paypalLogoSvg}</button>
+      <button type="button" class="pm-btn pm-btn-card" data-pm="card">Debit or Credit Card</button>
+    ` : `
+      <div class="pm-selected" role="button" tabindex="0" data-pm="${state.paymentMethod}">
+        <span class="pm-selected-name">${PM_META[state.paymentMethod].title}</span>
+        ${PM_SELECTED_ICONS[state.paymentMethod]}
+        <div class="pm-selected-check">${pmCheck}</div>
       </div>
-    ` : visibleMethods.map(k => PM_CARDS[k]).join('')}
+      ${state.paymentMethod === 'card' ? `<div id="card-form" class="pm-card-form">${renderCardForm()}</div>` : ''}
+    `}
 
     <div class="trust subtle" style="margin-bottom: 6px;">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
