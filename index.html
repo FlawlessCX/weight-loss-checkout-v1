@@ -11756,8 +11756,39 @@ function renderFooter(step) {
   footer.classList.remove('footer-payment', 'footer-pdp-selected');
 
   // No footer on these screens
-  if (['landing', 'analysing', 'processing', 'account-processing', 'submitting', 'product', 'account', 'create-account', 'account-details', 'q-experience'].includes(step)) {
+  if (['landing', 'analysing', 'processing', 'account-processing', 'submitting', 'account', 'create-account', 'account-details', 'q-experience'].includes(step)) {
     footer.style.display = 'none';
+    return;
+  }
+
+  // Product page (Choose Treatment) — show footer with selected product
+  if (step === 'product') {
+    const p = PRODUCTS[state.product];
+    if (!p) { footer.style.display = 'none'; return; }
+    const isSelected = state.product === p.key;
+    footer.style.display = 'flex';
+    footer.classList.add('footer-pdp-selected');
+    const thumbHtml = p.pdpThumbImage
+      ? `<img src="${p.pdpThumbImage}" alt="${escapeHTML(p.name)}" style="width:100%;height:100%;object-fit:cover;display:block;" />`
+      : productIllustration(p);
+    footer.innerHTML = `
+      <div class="pdp-footer-summary pdp-mini-hidden" style="border-bottom:1px solid var(--bod-line);padding-bottom:12px;margin-bottom:0;">
+        <div class="pdp-footer-img">${thumbHtml}</div>
+        <div class="pdp-footer-meta">
+          <div class="pdp-footer-name">${escapeHTML(p.name)}${p.trademark ? '<span class="tm">®</span>' : ''}</div>
+          <div class="pdp-footer-price">£${(p.price * 0.9).toFixed(2)}<span>/month</span> <s style="color:#858585;font-weight:400;font-size:11px;">£${p.price.toFixed(2)}</s></div>
+        </div>
+      </div>
+      <div class="fnav">
+        <div class="fnav-titleprog">
+          <span class="fnav-step-title">Your Treatment</span>
+        </div>
+        <div class="fnav-btns">
+          <button class="fnav-next" id="btn-next-footer">Continue with ${escapeHTML(p.name)}</button>
+        </div>
+      </div>
+    `;
+    document.getElementById('btn-next-footer')?.addEventListener('click', () => goNext());
     return;
   }
 
@@ -13322,6 +13353,11 @@ function getClinicalRecommendationHtml() {
 }
 
 function renderProduct(root) {
+  // Pre-select Wegovy on page load if nothing is selected
+  if (!state.product) {
+    state.product = 'wegovy';
+  }
+
   const scenario = getTreatmentScenarioCopy();
 
   // Build product lists from the scenario keys.
