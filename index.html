@@ -156,6 +156,7 @@
 
   /* "Things you need to know" card (node 1:1117) */
   .disclaimer-card {
+    background: #fff;
     border: 1px solid var(--bod-line);
     border-radius: 8px;
     padding: 24px;
@@ -1353,6 +1354,7 @@
     border-radius: 8px;
     border: 2px solid var(--bod-line);
     padding: 16px;
+    min-height: 72px;
     width: 100%;
     box-sizing: border-box;
     color: var(--bod-navy);
@@ -1370,14 +1372,14 @@
   .device.question-mode .q-option.selected {
     background: var(--bod-pale-blue);
     border: 3px solid var(--bod-navy);
-    padding: 14px;   /* 16px - 2px to compensate thicker border */
+    padding: 15px;  /* compensate 1px extra border each side */
   }
   /* Label — flex:1 so text fills available width */
   .device.question-mode .q-option-label {
     flex: 1 0 0;
     min-width: 0;
   }
-  /* Check circle (node 1:1171) — always in DOM, hidden when unselected */
+  /* Check circle — filled green when selected, hidden when unselected */
   .device.question-mode .q-option-check {
     width: 24px;
     height: 24px;
@@ -2334,6 +2336,117 @@
   .unit-toggle.imperial .unit-toggle-switch::after {
     transform: translateX(20px);
   }
+
+  /* === Q-intro (bod-mobile-intro) — "You're in the right place" full-screen === */
+  .bod-intro-body {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+  }
+  .bod-intro-bento {
+    display: flex;
+    gap: 8px;
+    aspect-ratio: 1;
+    width: 100%;
+  }
+  .bod-intro-left {
+    flex: 1;
+    border-radius: 8px;
+    background: #fdeeec;
+    overflow: hidden;
+    position: relative;
+  }
+  .bod-intro-left img {
+    position: absolute;
+    left: 50%;
+    top: 54%;
+    transform: translate(-50%, -50%);
+    width: 96%;
+    height: auto;
+    object-fit: contain;
+  }
+  .bod-intro-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .bod-intro-cell-person {
+    aspect-ratio: 1;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .bod-intro-cell-person img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .bod-intro-cell-pen {
+    aspect-ratio: 1;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.4) 0%, #ceeaff 100%);
+  }
+  .bod-intro-cell-pen img {
+    width: 78%;
+    height: auto;
+    object-fit: contain;
+    transform: rotate(-10deg);
+  }
+  .bod-intro-bullets {
+    list-style: none;
+    padding: 0;
+    margin: 4px 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+  }
+  .bod-intro-bullets li {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+    color: var(--bod-navy);
+  }
+  .bod-intro-bullets li::before {
+    content: '';
+    flex-shrink: 0;
+    margin-top: 2px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 1.5px solid var(--bod-success);
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%2300740b' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='20 6 9 17 4 12'/></svg>");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 9px 9px;
+    box-sizing: border-box;
+  }
+  .bod-intro-continue {
+    width: 100%;
+    height: 52px;
+    background: var(--bod-deep-blue);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Boots Sharp', sans-serif;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+    font-weight: 400;
+    cursor: pointer;
+    margin-top: 12px;
+  }
+  .bod-intro-continue:hover { background: #082e68; }
 
   /* Soft intro / reassurance step after the question pages */
   .reassure-hero {
@@ -10520,7 +10633,7 @@
 
     <div class="picker-section-title">About you</div>
     <button class="picker-btn" data-jump="q-experience"><span class="num">1</span>Q1 · Experience</button>
-    <button class="picker-btn" data-jump="right-place"><span class="num">2</span>Q1 Reward</button>
+    <button class="picker-btn" data-jump="q-intro"><span class="num">2</span>Q1.5 · You're in the right place</button>
     <button class="picker-btn" data-jump="q-reasons"><span class="num">3</span>Q2 · Reasons</button>
     <button class="picker-btn" data-jump="disclaimer"><span class="num">4</span>Q3 · Important info</button>
     <button class="picker-btn" data-jump="q-height-weight"><span class="num">5</span>Q4 · Height &amp; weight</button>
@@ -10563,8 +10676,8 @@
 
     <div class="picker-section-title">Post-order</div>
     <button class="picker-btn" data-jump="gp"><span class="num">36</span>Add your GP</button>
+    <button class="picker-btn" data-jump="photo-id"><span class="num">36.5</span>Photo ID Verification</button>
     <button class="picker-btn" data-jump="gp-disclaimer"><span class="num">37</span>Important Info Disclaimer (GP)</button>
-    <button class="picker-btn" data-jump="id-verify"><span class="num">38</span>Photo ID</button>
     <button class="picker-btn" data-jump="photos-intro"><span class="num">39</span>Body photos · intro</button>
     <button class="picker-btn" data-jump="photos-front-guide"><span class="num">40</span>Body photos · front guide</button>
     <button class="picker-btn" data-jump="photos-front"><span class="num">41</span>Body photos · front</button>
@@ -11113,9 +11226,6 @@ const state = {
   signInMethod:   null,    // 'passkey' | 'google' | 'apple' | 'magic-link'
   accountManualEntry: false,
   showOtherSignin: false,
-  idType:         null,         // 'passport' | 'driving' for the ID-verify step
-  idPhoto:              false,        // true once a photo has been "taken"
-  idPhotoCaptureActive: false,        // true when user clicks "Take Photo"
   bodyPhotoFront:       false,
   bodyPhotoSide:  false,
   photoConsent:   false,        // user accepted privacy policy on photos-intro
@@ -11141,10 +11251,9 @@ const currentStep = () => history[history.length - 1];
 function nextStep(step) {
   switch (step) {
     case 'landing':          return 'q-experience';
-    case 'q-experience':     return 'right-place';
-    case 'right-place':      return 'q-reasons';
-    case 'q-reasons':        return 'disclaimer';  // q-intro is hidden — skip straight to disclaimer
-    case 'q-intro':          return 'disclaimer';  // (kept for deep-linking but never reached via Continue)
+    case 'q-experience':     return 'q-intro';
+    case 'q-intro':          return 'q-reasons';
+    case 'q-reasons':        return 'disclaimer';
     case 'disclaimer':       return 'q-height-weight';
     case 'q-height-weight':  return 'q-gender';
     case 'q-gender':         return 'q-ethnicity';
@@ -11156,9 +11265,9 @@ function nextStep(step) {
     case 'product-details':  return 'upsell';
     case 'upsell':           return 'product-upsell';
     case 'product-upsell':   return 'create-account';
-    case 'gp':               return 'gp-disclaimer';
-    case 'gp-disclaimer':     return 'id-verify';
-    case 'id-verify':          return 'photos-intro';
+    case 'gp':               return 'photo-id';
+    case 'photo-id':         return 'gp-disclaimer';
+    case 'gp-disclaimer':     return 'photos-intro';
     case 'photos-intro':       return 'photos-front-guide';  // front guide
     case 'photos-front-guide': return 'photos-front';        // take front photo (auto-confirms)
     case 'photos-front':       return 'photos-side-guide';   // side guide
@@ -11187,7 +11296,15 @@ function progressPath() {
 
 function goNext() {
   const step = currentStep();
+
+
   if (!validate(step, true)) return;
+
+  // Photo ID verification: launch camera capture instead of advancing
+  if (step === 'photo-id') {
+    startIDPhotoCapture();
+    return;
+  }
 
   // Medical Questions wizard: each Continue advances the internal sub-step
   // until the final question is answered, then advances to the next journey
@@ -11289,8 +11406,6 @@ function resetFlow() {
     contactEmail: '',
     accountCreated: false,
     signInMethod: null, accountManualEntry: false, showOtherSignin: false,
-    idType: null,
-    idPhoto: false, idPhotoCaptureActive: false,
     bodyPhotoFront: false,
     bodyPhotoSide: false,
     photoConsent: false,
@@ -11324,8 +11439,8 @@ function validate(step, showErrors = false) {
     case 'q-name':          return !!(state.contactFirstName || '').trim();
     case 'q-medical-tbd':   return medicalCurrentAnswered();
     case 'gp':              return !!state.gp;
+    case 'photo-id':        return true;
     case 'gp-disclaimer':   return !!state.disclaimers.gp_agreed;
-    case 'id-verify':       return !!state.idPhoto;
     case 'photos-intro':       return true;
     case 'photos-front-guide': return true;
     case 'photos-side-guide':  return true;
@@ -11448,7 +11563,6 @@ function progressPercent(step) {
   const map = {
     'landing':         0,    // hidden anyway (marketing page)
     'q-experience':    6,
-    'right-place':     8,
     'q-reasons':       10,
     'q-intro':         14,
     'disclaimer':      18,
@@ -11472,7 +11586,6 @@ function progressPercent(step) {
     'processing':      76,
     'confirmation':    80,
     'gp':              85,
-    'id-verify':       89,
     'photos-intro':       92,
     'photos-front-guide': 93,
     'photos-front':       94,
@@ -11492,7 +11605,6 @@ function progressPercent(step) {
 const PHASE_MAP = {
   // Phase 1 — About you
   'q-experience':       { phase: 1, label: 'About You',      pct: 12 },
-  'right-place':        { phase: 1, label: 'About You',      pct: 18 },
   'q-reasons':          { phase: 1, label: 'About You',      pct: 26 },
   'q-intro':            { phase: 1, label: 'About You',      pct: 38 },
   'disclaimer':         { phase: 1, label: 'About You',      pct: 50 },
@@ -11517,8 +11629,8 @@ const PHASE_MAP = {
   // Phase 3 — Details
   'confirmation':       { phase: 3, label: 'Your Details',   pct: 10 },
   'gp':                 { phase: 3, label: 'Your Details',   pct: 26, stepTitle: 'Add GP' },
+  'photo-id':           { phase: 3, label: 'Your Details',   pct: 29 },
   'gp-disclaimer':      { phase: 3, label: 'Your Details',   pct: 32 },
-  'id-verify':          { phase: 3, label: 'Your Details',   pct: 42 },
   'photos-intro':       { phase: 3, label: 'Your Details',   pct: 55 },
   'photos-front-guide': { phase: 3, label: 'Your Details',   pct: 60 },
   'photos-side-guide':  { phase: 3, label: 'Your Details',   pct: 65 },
@@ -11532,7 +11644,6 @@ const PHASE_MAP = {
 // Section labels for the bottom nav progress bar
 const SECTION_LABELS = {
   'q-experience':       'About you',
-  'right-place':        'About you',
   'q-reasons':          'About you',
   'q-intro':            'About you',
   'q-height-weight':    'About you',
@@ -11553,8 +11664,8 @@ const SECTION_LABELS = {
   'processing':         'Payment',
   'confirmation':       'Complete',
   'gp':                 'GP details',
+  'photo-id':           'ID Verification',
   'gp-disclaimer':      'Verification',
-  'id-verify':          'Verification',
   'photos-intro':       'Verification',
   'photos-front-guide': 'Verification',
   'photos-front':       'Verification',
@@ -11572,7 +11683,6 @@ const BRAND_TITLE = 'Boots Online Doctor';
 const APP_TITLES = {
   'landing':         '',
   'q-experience':    BRAND_TITLE,
-  'right-place':     BRAND_TITLE,
   'q-reasons':       BRAND_TITLE,
   'q-intro':         BRAND_TITLE,
   'q-height-weight': BRAND_TITLE,
@@ -11581,6 +11691,7 @@ const APP_TITLES = {
   'q-name':          BRAND_TITLE,
   'q-medical-tbd':   BRAND_TITLE,
   'gp':              BRAND_TITLE,
+  'photo-id':        BRAND_TITLE,
   'gp-disclaimer':   BRAND_TITLE,
   'disclaimer':      BRAND_TITLE,
   'analysing':       '',
@@ -11597,7 +11708,6 @@ const APP_TITLES = {
   'payment':              BRAND_TITLE,
   'processing':      BRAND_TITLE,
   'confirmation':    BRAND_TITLE,
-  'id-verify':       BRAND_TITLE,
   'photos-intro':       BRAND_TITLE,
   'photos-front-guide': BRAND_TITLE,
   'photos-front':       BRAND_TITLE,
@@ -11648,18 +11758,18 @@ function render() {
   // Body photo camera screens are always full-screen
   document.getElementById('device').classList.toggle('camera-mode', step === 'photos-front' || step === 'photos-side');
   // Questionnaire styling: navy app-bar, pale blue hero, card-style options
-  const questionSteps = ['q-experience','q-reasons','q-height-weight','q-gender','q-ethnicity','q-name','q-medical-tbd','disclaimer'];
+  const questionSteps = ['q-experience','q-intro','q-reasons','q-height-weight','q-gender','q-ethnicity','q-name','q-medical-tbd','disclaimer'];
   const inQuestionMode = questionSteps.includes(step);
   document.getElementById('device').classList.toggle('question-mode', inQuestionMode);
   // Non-question pages that also use the pale-blue header band get the same
   // body-level gradient so the blue fades to white with no seam.
-  const headerSteps = ['upsell','product-upsell','fulfilment','create-account','account-details','confirmation','product','payment','right-place'];
+  const headerSteps = ['upsell','product-upsell','fulfilment','create-account','account-details','confirmation','product','payment'];
   document.getElementById('device').classList.toggle('has-header', headerSteps.includes(step));
 
   // In question-mode the progress bar moves to the top — drive its fill from
   // the overall journey percentage, and wire the white back-row button.
   // Progress bar starts at Q2 Reasons (step 3), not before
-  if (inQuestionMode && progressFill && !['q-experience', 'right-place'].includes(step)) {
+  if (inQuestionMode && progressFill && step !== 'q-experience' && step !== 'q-intro') {
     progressFill.style.width = progressPercent(step) + '%';
     const backTop = document.getElementById('btn-back-top');
     if (backTop) backTop.disabled = history.length <= 1;
@@ -11667,17 +11777,17 @@ function render() {
     progressFill.style.width = '0%';
   }
 
-  // Hide back button on Q1 Experience and Q1 Reward
+  // Hide back button on Q1 Experience and intro reassurance screen
   const backTop = document.getElementById('btn-back-top');
   if (backTop) {
-    backTop.style.display = ['q-experience', 'right-place'].includes(step) ? 'none' : '';
+    backTop.style.display = (step === 'q-experience' || step === 'q-intro') ? 'none' : '';
   }
 
   // Render screen
   const screens = {
     'landing':         renderLanding,
     'q-experience':    renderQExperience,
-    'right-place':     renderRightPlace,
+    'q-intro':         renderQIntro,
     'q-reasons':       renderQReasons,
     'q-height-weight': renderQHeightWeight,
     'q-gender':        renderQGender,
@@ -11685,6 +11795,7 @@ function render() {
     'q-name':          renderQName,
     'q-medical-tbd':   renderQMedicalTbd,
     'gp':              renderGP,
+    'photo-id':        renderPhotoID,
     'gp-disclaimer':   renderGPDisclaimer,
     'disclaimer':      renderDisclaimer,
     'analysing':       renderAnalysing,
@@ -11699,7 +11810,6 @@ function render() {
     'payment':              renderPayment,
     'processing':      renderProcessing,
     'confirmation':    renderConfirmation,
-    'id-verify':       renderIdVerify,
     'photos-intro':       renderPhotosIntro,
     'photos-front-guide': renderPhotosFrontGuide,
     'photos-front':       renderPhotosFront,
@@ -11737,7 +11847,7 @@ function journeyPhase(step) {
     { label: 'Medical History', steps: ['q-medical-tbd','analysing'] },
     { label: 'Your Treatment',  steps: ['product','product-details','upsell','product-upsell'] },
     { label: 'Your Order',      steps: ['create-account','account-details','account-processing','fulfilment','payment','processing','confirmation'] },
-    { label: 'Your Details',    steps: ['gp','gp-disclaimer','id-verify','photos-intro','photos-front-guide','photos-front','photos-side-guide','photos-side','clinician-submit','submitting','account'] },
+    { label: 'Your Details',    steps: ['gp','photo-id','gp-disclaimer','photos-intro','photos-front-guide','photos-front','photos-side-guide','photos-side','clinician-submit','submitting','account'] },
   ];
   for (let i = 0; i < PHASES.length; i++) {
     const idx = PHASES[i].steps.indexOf(step);
@@ -11756,7 +11866,7 @@ function renderFooter(step) {
   footer.classList.remove('footer-payment', 'footer-pdp-selected');
 
   // No footer on these screens
-  if (['landing', 'analysing', 'processing', 'account-processing', 'submitting', 'account', 'create-account', 'account-details', 'q-experience'].includes(step)) {
+  if (['landing', 'analysing', 'processing', 'account-processing', 'submitting', 'account', 'create-account', 'account-details', 'q-experience', 'q-intro'].includes(step)) {
     footer.style.display = 'none';
     return;
   }
@@ -11789,20 +11899,6 @@ function renderFooter(step) {
       </div>
     `;
     document.getElementById('btn-next-footer')?.addEventListener('click', () => goNext());
-    return;
-  }
-
-  // Q1 Reward gets a simple Continue button, no progress bar
-  if (step === 'right-place') {
-    footer.style.display = 'flex';
-    footer.innerHTML = `
-      <div class="fnav">
-        <div class="fnav-btns">
-          <button class="fnav-next" id="btn-continue-reward">Continue</button>
-        </div>
-      </div>
-    `;
-    document.getElementById('btn-continue-reward')?.addEventListener('click', () => goNext());
     return;
   }
 
@@ -11944,6 +12040,9 @@ function nextLabel(step) {
   if (step === 'gp') {
     return state.gp ? 'Select & Continue' : 'Select your GP to continue';
   }
+  if (step === 'photo-id') {
+    return 'Take ID Photo';
+  }
   if (step === 'disclaimer') {
     return 'I agree, continue';
   }
@@ -11963,9 +12062,6 @@ function nextLabel(step) {
     const last = MEDICAL_QUESTIONS.length - 1;
     const i = state.medicalStep || 0;
     return i >= last ? 'Submit medical history' : 'Next';
-  }
-  if (step === 'id-verify') {
-    return state.idPhoto ? 'Continue' : 'Take a photo of your ID';
   }
   if (step === 'photos-intro') {
     return 'Next';
@@ -12196,20 +12292,14 @@ function renderQExperience(root) {
     { key: 'before', label: "I've used weight loss medication before" },
   ];
   const sel = state.usedBefore;
-  const isLoading = state.qExpAdvancing;
 
   root.innerHTML = `
-    <div style="padding-top: 4px;">
+    <div>
       <h2>Have you used Weight Loss medication before?</h2>
       <p class="lede">This helps us tailor the right questions for you.</p>
     </div>
     <div class="q-options">
-      ${options.map(o => `
-        <div class="q-option ${sel === o.key ? 'selected' : ''} ${isLoading && sel === o.key ? 'loading' : ''}" role="button" tabindex="0" data-experience="${o.key}">
-          ${escapeHTML(o.label)}
-          ${isLoading && sel === o.key ? '<div style="position:absolute;right:16px;top:50%;transform:translateY(-50%);" class="spinner"></div>' : ''}
-        </div>
-      `).join('')}
+      ${options.map(o => qOptionHtml('experience', o.key, o.label, sel === o.key)).join('')}
     </div>
   `;
   root.querySelectorAll('[data-experience]').forEach(el => {
@@ -12222,41 +12312,12 @@ function renderQExperience(root) {
         state.qExpAdvancing = false;
         if (currentStep() !== 'q-experience') return;
         lastDirection = 'forward';
-        history.push('right-place');
+        history.push('q-intro');
         render();
         if (typeof refreshPicker === 'function') refreshPicker();
-      }, 800);
+      }, 600);
     });
   });
-}
-
-// Standalone "You're in the right place" page (was the Q1 feedback popup).
-function renderRightPlace(root) {
-  const fb = Q_EXP_FEEDBACK[state.usedBefore] || Q_EXP_FEEDBACK.new;
-  root.innerHTML = `
-    <div style="padding-top: 4px;">
-      <h2 style="font-size:24px;font-weight:400;line-height:32px;color:var(--bod-navy);text-align:center;margin:0 0 24px;letter-spacing:-0.2px;">${escapeHTML(fb.headline)}</h2>
-
-      <!-- Bento image grid -->
-      <div style="display:flex;gap:8px;aspect-ratio:1;width:100%;margin-bottom:24px;">
-        <div style="flex:1;border-radius:8px;background:#fdeeec;overflow:hidden;position:relative;">
-          <img src="assets/q1-phone-screen.png" alt="Boots Online Doctor app showing treatment" style="position:absolute;left:50%;top:54%;transform:translate(-50%,-50%);width:96%;height:auto;object-fit:contain;" />
-        </div>
-        <div style="flex:1;display:flex;flex-direction:column;gap:8px;">
-          <div style="aspect-ratio:1;border-radius:8px;overflow:hidden;">
-            <img src="assets/q1-person.png" alt="Person being active outdoors" style="width:100%;height:100%;object-fit:cover;" />
-          </div>
-          <div style="aspect-ratio:1;border-radius:8px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 50% 50%, rgba(255,255,255,0.4) 0%, #ceeaff 100%);">
-            <img src="assets/q1-pen.png" alt="Wegovy injection pen" style="width:78%;height:auto;object-fit:contain;transform:rotate(-10deg);" />
-          </div>
-        </div>
-      </div>
-
-      <ul class="qexp-sheet-bullets" style="border:none;padding:0;margin:0;gap:16px;width:100%;">
-        ${fb.bullets.map(b => `<li>${escapeHTML(b)}</li>`).join('')}
-      </ul>
-    </div>
-  `;
 }
 
 // Shared helper — renders a Figma-spec selector card (flex row, label flex:1,
@@ -12300,7 +12361,35 @@ function renderQReasons(root) {
 
 // Soft intro / reassurance, shown after the user picks their reasons,
 // before the medical questionnaire begins.
-// (renderQIntro removed — the "Good-fit intro" step is no longer part of the flow)
+function renderQIntro(root) {
+  root.innerHTML = `
+    <div>
+      <h2>You're in the right place.</h2>
+    </div>
+    <div class="bod-intro-body">
+      <div class="bod-intro-bento">
+        <div class="bod-intro-left">
+          <img src="assets/q1-phone-screen.png" alt="Boots Online Doctor app showing treatment options" />
+        </div>
+        <div class="bod-intro-right">
+          <div class="bod-intro-cell-person">
+            <img src="assets/q1-person.png" alt="Person being active outdoors" />
+          </div>
+          <div class="bod-intro-cell-pen">
+            <img src="assets/q1-pen.png" alt="GLP-1 injection pen" />
+          </div>
+        </div>
+      </div>
+      <ul class="bod-intro-bullets">
+        <li>GLP-1 medication is clinically proven and used safely by millions worldwide</li>
+        <li>UK-registered clinicians assess you and recommend the right treatment</li>
+        <li>Ongoing support every step of the way</li>
+      </ul>
+      <button type="button" class="bod-intro-continue" id="q-intro-continue">Continue</button>
+    </div>
+  `;
+  root.querySelector('#q-intro-continue').addEventListener('click', goNext);
+}
 
 // ---------------------------------------------------------------------------
 // Core medical questions (post-disclaimer)
@@ -12960,9 +13049,6 @@ function renderQMedicalTbd(root) {
       ${q.options.map(o => qOptionHtml('medical-option', o.key, o.label, selected.has(o.key))).join('')}
     </div>
 
-    ${idx === 0 ? `
-      <button type="button" class="medical-skip-btn" id="medical-skip">Skip medical questions</button>
-    ` : ''}
   `;
 
   root.querySelector('#medical-skip')?.addEventListener('click', () => {
@@ -13146,6 +13232,106 @@ function renderGPResults() {
   });
 }
 
+function renderPhotoID(root) {
+  root.innerHTML = `
+    <div style="padding: 24px 24px 0;">
+      <h2 style="font-size:24px;font-weight:400;line-height:32px;letter-spacing:0.2px;color:var(--bod-navy);margin:0 0 16px;">ID Verification</h2>
+      <p style="font-size:14px;line-height:20px;color:var(--bod-navy);margin:0;">We need a photo of either your UK Driving Licence or British Passport so that we can verify your identity.</p>
+    </div>
+
+    <div style="margin: 24px 24px 0; padding: 16px; background: #1a2540; border-radius: 12px; position: relative;">
+      <div style="position: absolute; top: 12px; left: 12px; display: flex; align-items: center; gap: 6px;">
+        <span style="width: 8px; height: 8px; background: #ff3b30; border-radius: 50%; animation: pulse 1.5s infinite;"></span>
+        <span style="font-size: 11px; font-weight: 600; color: white; letter-spacing: 0.05em;">LIVE</span>
+      </div>
+      <div style="position: absolute; top: 12px; right: 12px;">
+        <span style="font-size: 11px; font-weight: 600; color: #8b92a9; letter-spacing: 0.05em;">ID Document</span>
+      </div>
+      <div style="width: 100%; aspect-ratio: 1; border: 2px dashed #2d9d6a; border-radius: 8px; display: flex; align-items: center; justify-content: center; position: relative;">
+        <div style="text-align: center;">
+          <p style="font-size: 14px; color: white; margin: 0 0 8px 0; font-weight: 500;">Position your document in the frame</p>
+          <p style="font-size: 12px; color: #8b92a9; margin: 0;">Hold flat — all four corners must be visible</p>
+        </div>
+      </div>
+    </div>
+
+    <style>
+      @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.5; }
+      }
+    </style>
+
+    <div style="margin: 24px 0 0; padding: 0 24px;">
+    </div>
+  `;
+}
+
+function startIDPhotoCapture() {
+  // Show camera overlay for ID photo capture
+  const overlay = document.getElementById('overlay');
+  if (!overlay) return;
+
+  overlay.innerHTML = `
+    <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:1000;">
+      <div style="text-align:center;color:white;">
+        <p style="font-size:16px;margin:0 0 24px;font-weight:500;">Position your ID document in the frame</p>
+        <div style="width:300px;height:400px;border:2px solid #2d9d6a;border-radius:12px;margin:0 auto 24px;display:flex;align-items:center;justify-content:center;background:#1a2540;">
+          <span style="color:#8b92a9;font-size:14px;">Camera view</span>
+        </div>
+        <button id="btn-capture-id" style="background:#003d82;color:white;border:none;padding:12px 24px;border-radius:6px;font-size:14px;font-weight:600;cursor:pointer;margin:0 8px 12px;width:200px;">Capture Photo</button>
+        <button id="btn-cancel-id" style="background:transparent;color:white;border:1px solid white;padding:12px 24px;border-radius:6px;font-size:14px;font-weight:600;cursor:pointer;width:200px;">Cancel</button>
+      </div>
+    </div>
+  `;
+  overlay.classList.add('open');
+
+  document.getElementById('btn-capture-id')?.addEventListener('click', () => {
+    validateIDPhoto();
+  });
+
+  document.getElementById('btn-cancel-id')?.addEventListener('click', () => {
+    overlay.classList.remove('open');
+    overlay.innerHTML = '';
+  });
+}
+
+function validateIDPhoto() {
+  // Simulate photo validation with a loading state
+  const overlay = document.getElementById('overlay');
+  if (!overlay) return;
+
+  overlay.innerHTML = `
+    <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:1000;">
+      <div style="text-align:center;color:white;">
+        <p style="font-size:16px;margin:0 0 24px;font-weight:500;">Validating your ID...</p>
+        <div style="width:60px;height:60px;border:4px solid #2d9d6a;border-top-color:transparent;border-radius:50%;animation:spin 1s linear infinite;margin:0 auto;"></div>
+      </div>
+      <style>
+        @keyframes spin {
+          to { transform: rotate(360deg); }
+        }
+      </style>
+    </div>
+  `;
+
+  // Simulate validation delay (in real app, would validate against API)
+  setTimeout(() => {
+    // Photo is valid - close overlay and advance to next step
+    overlay.classList.remove('open');
+    overlay.innerHTML = '';
+    state.idPhotoTaken = true;
+
+    // Advance to next step
+    const target = nextStep(currentStep());
+    if (target) {
+      lastDirection = 'forward';
+      history.push(target);
+      render();
+    }
+  }, 2000);
+}
+
 function renderDisclaimer(root) {
   const listTickSvg = `<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="var(--bod-success)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
   root.innerHTML = `
@@ -13274,7 +13460,7 @@ function getTreatmentScenarioCopy() {
   return {
     heading:         'Clinician Recommended',
     sectionSub:      'Both treatments are highly effective. Review both and choose what feels right for you.',
-    recommendedKeys: ['wegovy', 'mounjaro'],
+    recommendedKeys: ['mounjaro', 'wegovy'],
     otherKeys:       [],
   };
 }
@@ -16765,6 +16951,7 @@ function renderPhotoCapture(root, opts) {
 
   // — Confirmed state —
   if (phase === 'confirmed') {
+    const isIdPhoto = type === 'id';
     root.innerHTML = `
       ${(!isBody && lede) ? `<p class="lede" style="margin-bottom:12px;">${escapeHTML(lede)}</p>` : ''}
       <div class="cam-confirmed-frame">
@@ -16775,7 +16962,7 @@ function renderPhotoCapture(root, opts) {
           <div class="cam-confirmed-label">Photo saved</div>
         </div>
       </div>
-      <button type="button" class="btn btn-secondary btn-block" id="btn-retake-conf-${stateKey}">Retake photo</button>`;
+      ${!isIdPhoto ? `<button type="button" class="btn btn-secondary btn-block" id="btn-retake-conf-${stateKey}">Retake photo</button>` : ''}`;
     root.querySelector(`#btn-retake-conf-${stateKey}`)?.addEventListener('click', () => {
       state[stateKey] = false;
       state.photoSession[stateKey] = 'camera';
@@ -16903,205 +17090,7 @@ function renderPhotoCapture(root, opts) {
       }, 600);
     }, 1800);
 
-  } else {
-    // ID photo — keep original camera UI
-    root.innerHTML = `
-      ${lede ? `<p class="lede" style="margin-bottom:12px;">${escapeHTML(lede)}</p>` : ''}
-      <div class="cam-vf" id="cam-vf-${stateKey}" style="min-height:${vfH};">
-        <div class="cam-vf-bg"></div>
-        <div class="cam-corners">
-          <div class="cam-corner-mark tl"></div><div class="cam-corner-mark tr"></div>
-          <div class="cam-corner-mark bl"></div><div class="cam-corner-mark br"></div>
-        </div>
-        <div class="cam-status-bar">
-          <span><span class="cam-rec-dot"></span>LIVE</span>
-          <span class="cam-status-label">${escapeHTML(screenLabel)}</span>
-        </div>
-        ${guideHtml}
-        <div class="cam-hint-bar" id="cam-hint-${stateKey}">
-          <strong>Position your document in the frame</strong>
-          Hold flat &mdash; all four corners must be visible
-        </div>
-      </div>`;
-
-    // Phase 1 — align after 1.8 s
-    _photoTimers[stateKey + '_align'] = setTimeout(() => {
-      const guide = document.getElementById('cam-guide-' + stateKey);
-      const hint  = document.getElementById('cam-hint-'  + stateKey);
-      const vf    = document.getElementById('cam-vf-'    + stateKey);
-      if (!vf) return;
-
-      guide?.classList.add('aligned');
-      if (hint) hint.innerHTML = `<strong style="color:#00da5a;">&#10003; Aligned &mdash; hold still</strong>Photo being captured&hellip;`;
-
-      const badge = document.createElement('div');
-      badge.className = 'cam-check';
-      badge.innerHTML = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
-      vf.appendChild(badge);
-
-      // Phase 2 — flash + capture after 1.3 s
-      _photoTimers[stateKey + '_cap'] = setTimeout(() => {
-        const flash = document.createElement('div');
-        flash.className = 'cam-flash';
-        vf.appendChild(flash);
-
-        _photoTimers[stateKey + '_post'] = setTimeout(() => {
-          const vfEl = document.getElementById('cam-vf-' + stateKey);
-          if (!vfEl) return;
-
-          // Show AI detection overlay (matches body shot UX)
-          const aiOverlay = document.createElement('div');
-          aiOverlay.className = 'cam-ai-check';
-          aiOverlay.innerHTML = `
-            <div class="cam-ai-ring"></div>
-            <div class="cam-ai-label">Detecting ID type&hellip;</div>`;
-          vfEl.appendChild(aiOverlay);
-
-          // After 1.5s — show detected type and auto-advance
-          _photoTimers[stateKey + '_ai1'] = setTimeout(() => {
-            // Randomly detect passport or driving licence for the prototype
-            const detected = (Math.random() > 0.5) ? 'passport' : 'driving';
-            state.idType = detected;
-            const detectedLabel = detected === 'passport' ? 'Passport detected' : 'UK Driving Licence detected';
-            aiOverlay.innerHTML = `
-              <div class="cam-ai-accepted-icon">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-              </div>
-              <div class="cam-ai-label cam-ai-label--ok">${detectedLabel}</div>`;
-
-            _photoTimers[stateKey + '_ai2'] = setTimeout(() => {
-              if (currentStep() !== 'id-verify') return;
-              if (!state.photoSession) state.photoSession = {};
-              state[stateKey] = true;
-              state.photoSession[stateKey] = 'confirmed';
-              goNext();
-            }, 900);
-          }, 1500);
-        }, 350);
-      }, 1300);
-    }, 1800);
   }
-}
-
-function renderIdVerify(root) {
-  root.innerHTML = `
-    <style>
-      .id-verify-layout {
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
-        background: #fff;
-      }
-      .id-verify-heading {
-        background: linear-gradient(180deg, rgba(5,5,75,0.04) 0%, rgba(5,5,75,0.02) 100%);
-        padding: 24px;
-        border-bottom: 1px solid #e7e7e7;
-      }
-      .id-verify-heading h2 {
-        margin: 0 0 8px;
-        font-size: 24px;
-        font-weight: 800;
-        color: #05054b;
-        line-height: 32px;
-      }
-      .id-verify-heading p {
-        margin: 0;
-        font-size: 14px;
-        color: #666;
-        line-height: 20px;
-      }
-      .id-verify-content {
-        flex: 1;
-        overflow-y: auto;
-        padding: 0;
-      }
-      .id-verify-camera {
-        padding: 24px;
-        min-height: 400px;
-        display: flex;
-        flex-direction: column;
-      }
-      .id-verify-footer {
-        border-top: 1px solid #e7e7e7;
-        padding: 16px 24px;
-        background: #fff;
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
-      }
-    </style>
-    <div class="id-verify-layout">
-      <div class="id-verify-heading">
-        <h2>ID Verification</h2>
-        <p>We need a photo of either your UK Driving Licence or British Passport so that we can verify your identity.</p>
-      </div>
-      <div class="id-verify-content">
-        <div class="id-verify-camera">
-          <div id="id-photo-viewer"></div>
-        </div>
-      </div>
-      <div class="id-verify-footer">
-        <div>
-          <div style="font-size: 14px; color: #05054b; font-weight: 600; margin-bottom: 8px;">Your Details</div>
-          <div style="display: flex; gap: 4px;">
-            <div style="background: #0a3a81; height: 6px; width: 32px; border-radius: 88px;"></div>
-            <div style="background: #0a3a81; height: 6px; flex: 1; min-width: 100px; border-radius: 88px;"></div>
-            <div style="background: #c4ddf6; height: 6px; width: 48px; border-radius: 88px;"></div>
-            <div style="background: #c4ddf6; height: 6px; width: 32px; border-radius: 88px;"></div>
-          </div>
-        </div>
-        <div style="display: flex; gap: 12px;">
-          <button type="button" class="fnav-back" style="flex: 0 0 auto; min-width: 80px;">Back</button>
-          <button type="button" class="fnav-next" id="btn-take-id-photo" style="flex: 1; min-width: 0;">Take a photo of your ID</button>
-        </div>
-      </div>
-    </div>
-  `;
-
-  const viewerContainer = document.getElementById('id-photo-viewer');
-
-  // Initialize photo session state if not exists
-  if (!state.photoSession) state.photoSession = {};
-
-  // Only render the active camera if the user has clicked the button
-  if (state.idPhotoCaptureActive) {
-    state.idPhoto = false;
-    state.photoSession['idPhoto'] = 'camera';
-
-    // Render the photo capture interface showing the live camera
-    renderPhotoCapture(viewerContainer, {
-      type: 'id',
-      stateKey: 'idPhoto',
-      title: 'ID Document',
-    });
-  } else {
-    // Show a static camera placeholder
-    viewerContainer.innerHTML = `
-      <div style="position: relative; background: #0c0f14; border-radius: 16px; overflow: hidden; width: 100%; margin: 8px 0 16px; min-height: 230px; display: flex; align-items: center; justify-content: center;">
-        <div style="position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 42%, #1a2232 0%, #0c0f14 100%);"></div>
-        <div style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 1; padding: 20px;">
-          <div style="position: absolute; top: 0; left: 0; right: 0; padding: 12px 14px; background: linear-gradient(to bottom, rgba(0,0,0,0.65) 0%, transparent 100%); color: #fff; font-size: 11px; font-weight: 700; letter-spacing: 0.05em; display: flex; justify-content: space-between;">
-            <span><span style="display: inline-block; width: 7px; height: 7px; background: #ff3b30; border-radius: 50%; margin-right: 5px; vertical-align: middle; animation: blink 1.1s step-end infinite;"></span>LIVE</span>
-            <span style="opacity: 0.65; font-weight: 500; font-size: 11px;">ID Document</span>
-          </div>
-          <div style="position: absolute; inset: 12px; border: 2px dashed rgba(0,218,90,0.52); border-radius: 10px; pointer-events: none;"></div>
-          <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 26px 16px 14px; background: linear-gradient(to top, rgba(0,0,0,0.72) 0%, transparent 100%); color: rgba(255,255,255,0.82); font-size: 12.5px; text-align: center; line-height: 1.45;">
-            <strong style="display: block; font-size: 13.5px; font-weight: 700; color: #fff; margin-bottom: 3px;">Position your document in the frame</strong>
-            Hold flat — all four corners must be visible
-          </div>
-          <style>
-            @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.12; } }
-          </style>
-        </div>
-      </div>
-    `;
-  }
-
-  // Set up the Take Photo button
-  document.getElementById('btn-take-id-photo')?.addEventListener('click', () => {
-    state.idPhotoCaptureActive = true;
-    render();
-  });
 }
 
 function renderPhotosIntro(root) {
@@ -17406,16 +17395,6 @@ function jumpToScreen(screen) {
     refreshPicker();
     return;
   }
-  // Q1 Reward — the standalone "You're in the right place" page
-  if (screen === 'right-place') {
-    overlay?.classList.remove('open');
-    if (!state.usedBefore) state.usedBefore = 'new';
-    history = ['landing', 'q-experience', 'right-place'];
-    lastDirection = 'forward';
-    render();
-    refreshPicker();
-    return;
-  }
   // Question 2: reasons, pre-set the experience answer so the deep link
   // lands here cleanly (the user can still change Q1 via the back button).
   if (screen === 'q-reasons') {
@@ -17431,8 +17410,7 @@ function jumpToScreen(screen) {
   if (screen === 'q-intro') {
     overlay?.classList.remove('open');
     if (!state.usedBefore) state.usedBefore = 'new';
-    if (!state.lossReasons.length) state.lossReasons = ['health'];
-    history = ['landing', 'q-experience', 'q-reasons', 'q-intro'];
+    history = ['landing', 'q-experience', 'q-intro'];
     lastDirection = 'forward';
     render();
     refreshPicker();
@@ -17490,6 +17468,24 @@ function jumpToScreen(screen) {
     return;
   }
 
+  // Photo ID Verification — shown after GP selection
+  if (screen === 'photo-id') {
+    document.getElementById('overlay')?.classList.remove('open');
+    state.disclaimers = { agreed: true };
+    if (!state.product) state.product = 'mounjaro';
+    if (!state.fulfilment) state.fulfilment = 'home';
+    if (state.fulfilment === 'home' && !state.address) state.address = '12 Park Walk, London, SW10 0LE';
+    if (state.fulfilment === 'home' && !state.deliverySpeed) state.deliverySpeed = 'standard';
+    if (!state.paymentMethod) state.paymentMethod = 'card';
+    if (!state.orderRef) state.orderRef = 'BOD-WL-' + Math.floor(40000 + Math.random() * 9999);
+    if (!state.gp) state.gp = { name: 'General Practice', postcode: 'SW10' };
+    history = ['product', 'upsell', 'product-upsell', 'create-account', 'account-details', 'fulfilment', 'payment', 'processing', 'confirmation', 'gp', 'photo-id'];
+    lastDirection = 'forward';
+    render();
+    refreshPicker();
+    return;
+  }
+
   // GP Disclaimer — shown after GP details
   if (screen === 'gp-disclaimer') {
     document.getElementById('overlay')?.classList.remove('open');
@@ -17540,7 +17536,7 @@ function jumpToScreen(screen) {
   // Pre-seed fulfilment (delivery or collection) data for any screen from
   // Payment onwards, so deep-linking forward never lands on a screen with
   // an empty address / store reference.
-  if (['payment','processing','confirmation','gp','id-verify','photos-intro','photos-front-guide','photos-front','photos-side-guide','photos-side','review-submit','account'].includes(screen)) {
+  if (['payment','processing','confirmation','gp','photos-intro','photos-front-guide','photos-front','photos-side-guide','photos-side','review-submit','account'].includes(screen)) {
     if (!state.fulfilment) state.fulfilment = 'home';
     if (state.fulfilment === 'home' && !state.address) {
       state.address = '12 Park Walk, London, SW10 0LE';
@@ -17557,7 +17553,7 @@ function jumpToScreen(screen) {
 
   // Pre-seed the combined Create-account form (name + email + method +
   // consent) when deep-linking past it.
-  if (['payment','processing','confirmation','gp','id-verify','photos-intro','photos-front-guide','photos-front','photos-side-guide','photos-side','review-submit','account'].includes(screen)) {
+  if (['payment','processing','confirmation','gp','photos-intro','photos-front-guide','photos-front','photos-side-guide','photos-side','review-submit','account'].includes(screen)) {
     if (!state.contactFirstName) state.contactFirstName = 'Alex';
     if (!state.contactLastName)  state.contactLastName  = 'Bradbury';
     if (!state.contactEmail)     state.contactEmail     = 'alex@gmail.com';
@@ -17568,7 +17564,7 @@ function jumpToScreen(screen) {
   // Pre-seed a payment method for any screen at or after Processing so the
   // downstream views (Confirmation, Account, Review & Submit) have a method
   // to display rather than an empty placeholder.
-  if (['processing','confirmation','gp','id-verify','photos-intro','photos-front-guide','photos-front','photos-side-guide','photos-side','review-submit','account'].includes(screen)) {
+  if (['processing','confirmation','gp','photos-intro','photos-front-guide','photos-front','photos-side-guide','photos-side','review-submit','account'].includes(screen)) {
     if (!state.paymentMethod) state.paymentMethod = 'card';
     if (state.paymentMethod === 'card') {
       Object.assign(state.card, {
@@ -17587,10 +17583,6 @@ function jumpToScreen(screen) {
 
   // Pre-seed photo state for deep links into the post-GP flow so each screen
   // can render in its "complete" state if the user deep-links forward.
-  if (['photos-intro','photos-front-guide','photos-front','photos-side-guide','photos-side','review-submit','clinician-submit','account'].includes(screen)) {
-    if (!state.idType) state.idType = 'passport';
-    if (!state.idPhoto) state.idPhoto = true;
-  }
   if (['photos-side-guide','photos-side','review-submit','clinician-submit','account'].includes(screen)) {
     if (!state.bodyPhotoFront) state.bodyPhotoFront = true;
   }
@@ -17619,16 +17611,15 @@ function jumpToScreen(screen) {
     'payment':         ['product', 'upsell', 'product-upsell', 'create-account', 'account-details', 'fulfilment', 'payment'],
     'processing':      ['product', 'upsell', 'product-upsell', 'create-account', 'account-details', 'fulfilment', 'payment', 'processing'],
     'confirmation':    ['product', 'upsell', 'product-upsell', 'create-account', 'account-details', 'fulfilment', 'payment', 'processing', 'confirmation'],
-    'id-verify':       ['product', 'upsell', 'product-upsell', 'create-account', 'account-details', 'fulfilment', 'payment', 'processing', 'confirmation', 'gp', 'id-verify'],
-    'photos-intro':       ['product', 'upsell', 'product-upsell', 'create-account', 'account-details', 'fulfilment', 'payment', 'processing', 'confirmation', 'gp', 'id-verify', 'photos-intro'],
-    'photos-front-guide': ['product', 'upsell', 'product-upsell', 'create-account', 'account-details', 'fulfilment', 'payment', 'processing', 'confirmation', 'gp', 'id-verify', 'photos-intro', 'photos-front-guide'],
-    'photos-front':       ['product', 'upsell', 'product-upsell', 'create-account', 'account-details', 'fulfilment', 'payment', 'processing', 'confirmation', 'gp', 'id-verify', 'photos-intro', 'photos-front-guide', 'photos-front'],
-    'photos-side-guide':  ['product', 'upsell', 'product-upsell', 'create-account', 'account-details', 'fulfilment', 'payment', 'processing', 'confirmation', 'gp', 'id-verify', 'photos-intro', 'photos-front-guide', 'photos-front', 'photos-side-guide'],
-    'photos-side':        ['product', 'upsell', 'product-upsell', 'create-account', 'account-details', 'fulfilment', 'payment', 'processing', 'confirmation', 'gp', 'id-verify', 'photos-intro', 'photos-front-guide', 'photos-front', 'photos-side-guide', 'photos-side'],
-    'review-submit':      ['product', 'upsell', 'product-upsell', 'create-account', 'account-details', 'fulfilment', 'payment', 'processing', 'confirmation', 'gp', 'id-verify', 'photos-intro', 'photos-front-guide', 'photos-front', 'photos-side-guide', 'photos-side', 'review-submit'],
-    'clinician-submit':   ['product', 'upsell', 'product-upsell', 'create-account', 'account-details', 'fulfilment', 'payment', 'processing', 'confirmation', 'gp', 'id-verify', 'photos-intro', 'photos-front-guide', 'photos-front', 'photos-side-guide', 'photos-side', 'review-submit', 'clinician-submit'],
-    'submitting':         ['product', 'upsell', 'product-upsell', 'create-account', 'account-details', 'fulfilment', 'payment', 'processing', 'confirmation', 'gp', 'id-verify', 'photos-intro', 'photos-front-guide', 'photos-front', 'photos-side-guide', 'photos-side', 'review-submit', 'clinician-submit', 'submitting'],
-    'account':            ['product', 'upsell', 'product-upsell', 'create-account', 'account-details', 'fulfilment', 'payment', 'processing', 'confirmation', 'gp', 'id-verify', 'photos-intro', 'photos-front-guide', 'photos-front', 'photos-side-guide', 'photos-side', 'review-submit', 'clinician-submit', 'account'],
+    'photos-intro':       ['product', 'upsell', 'product-upsell', 'create-account', 'account-details', 'fulfilment', 'payment', 'processing', 'confirmation', 'gp', 'photos-intro'],
+    'photos-front-guide': ['product', 'upsell', 'product-upsell', 'create-account', 'account-details', 'fulfilment', 'payment', 'processing', 'confirmation', 'gp', 'photos-intro', 'photos-front-guide'],
+    'photos-front':       ['product', 'upsell', 'product-upsell', 'create-account', 'account-details', 'fulfilment', 'payment', 'processing', 'confirmation', 'gp', 'photos-intro', 'photos-front-guide', 'photos-front'],
+    'photos-side-guide':  ['product', 'upsell', 'product-upsell', 'create-account', 'account-details', 'fulfilment', 'payment', 'processing', 'confirmation', 'gp', 'photos-intro', 'photos-front-guide', 'photos-front', 'photos-side-guide'],
+    'photos-side':        ['product', 'upsell', 'product-upsell', 'create-account', 'account-details', 'fulfilment', 'payment', 'processing', 'confirmation', 'gp', 'photos-intro', 'photos-front-guide', 'photos-front', 'photos-side-guide', 'photos-side'],
+    'review-submit':      ['product', 'upsell', 'product-upsell', 'create-account', 'account-details', 'fulfilment', 'payment', 'processing', 'confirmation', 'gp', 'photos-intro', 'photos-front-guide', 'photos-front', 'photos-side-guide', 'photos-side', 'review-submit'],
+    'clinician-submit':   ['product', 'upsell', 'product-upsell', 'create-account', 'account-details', 'fulfilment', 'payment', 'processing', 'confirmation', 'gp', 'photos-intro', 'photos-front-guide', 'photos-front', 'photos-side-guide', 'photos-side', 'review-submit', 'clinician-submit'],
+    'submitting':         ['product', 'upsell', 'product-upsell', 'create-account', 'account-details', 'fulfilment', 'payment', 'processing', 'confirmation', 'gp', 'photos-intro', 'photos-front-guide', 'photos-front', 'photos-side-guide', 'photos-side', 'review-submit', 'clinician-submit', 'submitting'],
+    'account':            ['product', 'upsell', 'product-upsell', 'create-account', 'account-details', 'fulfilment', 'payment', 'processing', 'confirmation', 'gp', 'photos-intro', 'photos-front-guide', 'photos-front', 'photos-side-guide', 'photos-side', 'review-submit', 'clinician-submit', 'account'],
   };
   history = stacks[screen] || ['product'];
   lastDirection = 'forward';
@@ -17792,7 +17783,6 @@ const EXPORT_SCREENS = [
   { name: '26-payment-set-up',          route: 'confirmation' },
   // Post-order
   { name: '27-add-your-gp',             route: 'gp' },
-  { name: '28-id-verify',               route: 'id-verify' },
   { name: '29-body-photos-intro',       route: 'photos-intro' },
   { name: '30-body-photos-front-guide', route: 'photos-front-guide' },
   { name: '31-body-photos-front',       route: 'photos-front' },
@@ -18076,7 +18066,6 @@ if (window.EMBED) document.body.classList.add('embed-mode');
 const HASH_ROUTES = {
   'landing':          () => { history = ['landing']; lastDirection = 'forward'; render(); },
   'q-experience':     () => { jumpToScreen('q-experience'); },
-  'right-place':      () => { jumpToScreen('right-place'); },
   'q-reasons':        () => { state.usedBefore = state.usedBefore || 'new'; jumpToScreen('q-reasons'); },
   'q-intro':          () => { jumpToScreen('q-intro'); },
   'q-height-weight':  () => { jumpToScreen('q-height-weight'); },
@@ -18164,11 +18153,6 @@ const HASH_ROUTES = {
   },
   'processing':       () => { jumpToScreen('processing'); },
   'confirmation':     () => { jumpToScreen('confirmation'); },
-  'id-verify':        () => {
-    state.idType = state.idType || 'passport';
-    state.idPhoto = true;
-    jumpToScreen('id-verify');
-  },
   'photos-intro':       () => { jumpToScreen('photos-intro'); },
   'photos-front-guide': () => {
     state.photoConsent = true;
