@@ -12434,8 +12434,8 @@ function renderQGender(root) {
   ];
   root.innerHTML = `
     <div style="padding-top: 4px;">
-      <h2>What is your gender at birth?</h2>
-      <p class="lede">Treatments and dosing guidelines can vary based on the gender assigned at birth.</p>
+      <h2>What is your sex at birth?</h2>
+      <p class="lede">To prescribe safely, we need to know your sex assigned at birth. We have some important pregnancy and contraception advice to give you.</p>
     </div>
     <div class="q-options">
       ${options.map(o => qOptionHtml('gender', o.key, o.label, state.gender === o.key)).join('')}
