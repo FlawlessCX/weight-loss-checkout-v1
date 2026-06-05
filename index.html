@@ -11325,8 +11325,7 @@ function nextStep(step) {
     case 'q-experience':     return 'q-intro';
     case 'q-intro':          return 'q-reasons';
     case 'q-reasons':        return 'disclaimer';
-    case 'disclaimer':       return 'photo-id';
-    case 'photo-id':         return 'q-height-weight';
+    case 'disclaimer':       return 'q-height-weight';
     case 'q-height-weight':  return 'q-gender';
     case 'q-gender':         return 'q-ethnicity';
     case 'q-ethnicity':      return 'q-name';
@@ -11338,7 +11337,8 @@ function nextStep(step) {
     case 'upsell':           return 'create-account'; // product-upsell hidden from journey (keep for later)
     case 'product-upsell':   return 'create-account';
     case 'gp':               return 'gp-disclaimer';
-    case 'gp-disclaimer':     return 'photos-intro';
+    case 'gp-disclaimer':     return 'photo-id';
+    case 'photo-id':          return 'photos-intro';
     case 'photos-intro':       return 'photos-front-guide';  // front guide
     case 'photos-front-guide': return 'photos-front';        // take front photo (auto-confirms)
     case 'photos-front':       return 'photos-side-guide';   // side guide
@@ -11697,7 +11697,7 @@ const PHASE_MAP = {
   // Phase 3 — Details
   'confirmation':       { phase: 3, label: 'Your Details',   pct: 10 },
   'gp':                 { phase: 3, label: 'Your Details',   pct: 26, stepTitle: 'Add GP' },
-  'photo-id':           { phase: 1, label: 'About You',       pct: 53 },
+  'photo-id':           { phase: 3, label: 'Your Details',    pct: 29 },
   'gp-disclaimer':      { phase: 3, label: 'Your Details',   pct: 32 },
   'photos-intro':       { phase: 3, label: 'Your Details',   pct: 55 },
   'photos-front-guide': { phase: 3, label: 'Your Details',   pct: 60 },
@@ -11914,11 +11914,11 @@ function render() {
 function journeyPhase(step) {
   const PHASES = [
     { label: 'Get started',     steps: ['q-experience'] },
-    { label: 'About You',       steps: ['q-reasons','disclaimer','photo-id','q-height-weight','q-gender','q-ethnicity','q-name'] },
+    { label: 'About You',       steps: ['q-reasons','disclaimer','q-height-weight','q-gender','q-ethnicity','q-name'] },
     { label: 'Medical History', steps: ['q-medical-tbd','analysing'] },
     { label: 'Your Treatment',  steps: ['product','product-details','upsell','product-upsell'] },
     { label: 'Your Order',      steps: ['create-account','account-details','fulfilment','delivery-address','find-store','payment','processing','confirmation'] },
-    { label: 'Your Details',    steps: ['gp','gp-disclaimer','photos-intro','photos-front-guide','photos-front','photos-side-guide','photos-side','clinician-submit','submitting','account'] },
+    { label: 'Your Details',    steps: ['gp','gp-disclaimer','photo-id','photos-intro','photos-front-guide','photos-front','photos-side-guide','photos-side','clinician-submit','submitting','account'] },
   ];
   for (let i = 0; i < PHASES.length; i++) {
     const idx = PHASES[i].steps.indexOf(step);
