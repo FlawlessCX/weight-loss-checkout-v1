@@ -10542,23 +10542,25 @@
     <button class="picker-btn" data-jump="product-upsell"><span class="num">14</span>Product Upsell</button>
     <button class="picker-btn" data-jump="create-account"><span class="num">15</span>Account · Auth</button>
     <button class="picker-btn" data-jump="account-details"><span class="num">16</span>Account · Personal details</button>
-    <button class="picker-btn" data-jump="fulfilment"><span class="num">17</span>Fulfilment</button>
-    <button class="picker-btn" data-jump="payment"><span class="num">18</span>Payment</button>
-    <button class="picker-btn" data-jump="processing"><span class="num">19</span>Processing</button>
-    <button class="picker-btn" data-jump="confirmation"><span class="num">20</span>Payment set up</button>
+    <button class="picker-btn" data-jump="account-processing"><span class="num">17</span>Account · Processing</button>
+    <button class="picker-btn" data-jump="fulfilment"><span class="num">18</span>Fulfilment</button>
+    <button class="picker-btn" data-jump="payment"><span class="num">19</span>Payment</button>
+    <button class="picker-btn" data-jump="processing"><span class="num">20</span>Processing</button>
+    <button class="picker-btn" data-jump="confirmation"><span class="num">21</span>Payment set up</button>
 
     <div class="picker-section-title">Post-order</div>
-    <button class="picker-btn" data-jump="gp"><span class="num">21</span>Add your GP</button>
-    <button class="picker-btn" data-jump="id-verify"><span class="num">22</span>Photo ID</button>
-    <button class="picker-btn" data-jump="photos-intro"><span class="num">23</span>Body photos · intro</button>
-    <button class="picker-btn" data-jump="photos-front-guide"><span class="num">24</span>Body photos · front guide</button>
-    <button class="picker-btn" data-jump="photos-front"><span class="num">25</span>Body photos · front</button>
-    <button class="picker-btn" data-jump="photos-side-guide"><span class="num">26</span>Body photos · side guide</button>
-    <button class="picker-btn" data-jump="photos-side"><span class="num">27</span>Body photos · side</button>
-    <button class="picker-btn" data-jump="review-submit"><span class="num">28</span>Review &amp; submit</button>
-    <button class="picker-btn" data-jump="clinician-submit"><span class="num">29</span>Clinician disclaimer</button>
-    <button class="picker-btn" data-jump="submitting"><span class="num">30</span>Submitting</button>
-    <button class="picker-btn" data-jump="account"><span class="num">31</span>Your account</button>
+    <button class="picker-btn" data-jump="gp"><span class="num">22</span>Add your GP</button>
+    <button class="picker-btn" data-jump="gp-disclaimer"><span class="num">23</span>Important Info Disclaimer (GP)</button>
+    <button class="picker-btn" data-jump="id-verify"><span class="num">24</span>Photo ID</button>
+    <button class="picker-btn" data-jump="photos-intro"><span class="num">25</span>Body photos · intro</button>
+    <button class="picker-btn" data-jump="photos-front-guide"><span class="num">26</span>Body photos · front guide</button>
+    <button class="picker-btn" data-jump="photos-front"><span class="num">27</span>Body photos · front</button>
+    <button class="picker-btn" data-jump="photos-side-guide"><span class="num">28</span>Body photos · side guide</button>
+    <button class="picker-btn" data-jump="photos-side"><span class="num">29</span>Body photos · side</button>
+    <button class="picker-btn" data-jump="review-submit"><span class="num">30</span>Review &amp; submit</button>
+    <button class="picker-btn" data-jump="clinician-submit"><span class="num">31</span>Clinician disclaimer</button>
+    <button class="picker-btn" data-jump="submitting"><span class="num">32</span>Submitting</button>
+    <button class="picker-btn" data-jump="account"><span class="num">33</span>Your account</button>
 
     <hr class="picker-divider" />
     <button class="picker-reset" id="picker-reset">Reset flow</button>
@@ -11083,7 +11085,7 @@ const state = {
   ethnicity:      null,
   medicalStep:    0,           // current sub-step inside the Medical Questions wizard
   medicalAnswers: {},          // per-question answers, keyed by question id
-  disclaimers:    { agreed: false },
+  disclaimers:    { agreed: false, gp_agreed: false, gp_items: {} },
   product:        null,
   viewingProduct: null,
   coaching:       null,    // upsell - null = no choice yet, true = added, false = declined
@@ -11152,7 +11154,8 @@ function nextStep(step) {
     case 'product-details':  return 'upsell';
     case 'upsell':           return 'product-upsell';
     case 'product-upsell':   return 'create-account';
-    case 'gp':               return 'id-verify';
+    case 'gp':               return 'gp-disclaimer';
+    case 'gp-disclaimer':     return 'id-verify';
     case 'id-verify':          return 'photos-intro';
     case 'photos-intro':       return 'photos-front-guide';  // front guide
     case 'photos-front-guide': return 'photos-front';        // take front photo (auto-confirms)
@@ -11269,7 +11272,7 @@ function resetFlow() {
     weightUnit: 'metric', weightKg: '', weightSt: '', weightLb: '',
     gender: null, ethnicity: null,
     medicalStep: 0, medicalAnswers: {},
-    disclaimers: { agreed: false },
+    disclaimers: { agreed: false, gp_agreed: false, gp_items: {} },
     product: null, viewingProduct: null, coaching: null, vitamins: null,
     fulfilment: null, deliverySpeed: null,
     postcodeQuery: '', addressOptions: [], address: null, addressManual: false,
@@ -11320,6 +11323,7 @@ function validate(step, showErrors = false) {
     case 'q-name':          return !!(state.contactFirstName || '').trim();
     case 'q-medical-tbd':   return medicalCurrentAnswered();
     case 'gp':              return !!state.gp;
+    case 'gp-disclaimer':   return !!state.disclaimers.gp_agreed;
     case 'id-verify':       return !!state.idPhoto;
     case 'photos-intro':       return true;
     case 'photos-front-guide': return true;
@@ -11549,6 +11553,7 @@ const SECTION_LABELS = {
   'processing':         'Payment',
   'confirmation':       'Complete',
   'gp':                 'GP details',
+  'gp-disclaimer':      'Verification',
   'id-verify':          'Verification',
   'photos-intro':       'Verification',
   'photos-front-guide': 'Verification',
@@ -11577,6 +11582,7 @@ const APP_TITLES = {
   'q-name':          BRAND_TITLE,
   'q-medical-tbd':   BRAND_TITLE,
   'gp':              BRAND_TITLE,
+  'gp-disclaimer':   BRAND_TITLE,
   'disclaimer':      BRAND_TITLE,
   'analysing':       '',
   'product':         BRAND_TITLE,
@@ -11672,6 +11678,7 @@ function render() {
     'q-name':          renderQName,
     'q-medical-tbd':   renderQMedicalTbd,
     'gp':              renderGP,
+    'gp-disclaimer':   renderGPDisclaimer,
     'disclaimer':      renderDisclaimer,
     'analysing':       renderAnalysing,
     'product':         renderProduct,
@@ -11722,7 +11729,7 @@ function journeyPhase(step) {
     { label: 'Get started',  steps: ['q-experience'] },
     { label: 'About you',    steps: ['q-reasons','disclaimer','q-height-weight','q-gender','q-ethnicity','q-name','q-medical-tbd','analysing'] },
     { label: 'Treatment',    steps: ['product','product-details','upsell','product-upsell','create-account','account-details','account-processing','fulfilment','payment','processing','confirmation'] },
-    { label: 'Verification', steps: ['gp','id-verify','photos-intro','photos-front-guide','photos-front','photos-side-guide','photos-side','review-submit','clinician-submit','submitting','account'] },
+    { label: 'Verification', steps: ['gp','gp-disclaimer','id-verify','photos-intro','photos-front-guide','photos-front','photos-side-guide','photos-side','review-submit','clinician-submit','submitting','account'] },
   ];
   for (let i = 0; i < PHASES.length; i++) {
     const idx = PHASES[i].steps.indexOf(step);
@@ -11741,7 +11748,7 @@ function renderFooter(step) {
   footer.classList.remove('footer-payment', 'footer-pdp-selected');
 
   // No footer on these screens
-  if (['landing', 'analysing', 'processing', 'account-processing', 'submitting', 'product', 'account', 'review-submit', 'q-experience', 'right-place', 'create-account', 'account-details'].includes(step)) {
+  if (['landing', 'analysing', 'processing', 'account-processing', 'submitting', 'product', 'account', 'review-submit', 'create-account', 'account-details'].includes(step)) {
     footer.style.display = 'none';
     return;
   }
@@ -11885,6 +11892,9 @@ function nextLabel(step) {
     return state.gp ? 'Select & Continue' : 'Select your GP to continue';
   }
   if (step === 'disclaimer') {
+    return 'I agree, continue';
+  }
+  if (step === 'gp-disclaimer') {
     return 'I agree, continue';
   }
   if (step === 'create-account') {
@@ -12147,20 +12157,8 @@ function renderQExperience(root) {
   `;
   root.querySelectorAll('[data-experience]').forEach(el => {
     el.addEventListener('click', () => {
-      if (state.qExpAdvancing) return;
       state.usedBefore = el.dataset.experience;
-      state.qExpAdvancing = true;
-      // Show the selected state first, then advance after a brief pause so
-      // the transition doesn't feel instant/jarring.
       render();
-      setTimeout(() => {
-        state.qExpAdvancing = false;
-        if (currentStep() !== 'q-experience') return;
-        lastDirection = 'forward';
-        history.push('right-place');
-        render();
-        if (typeof refreshPicker === 'function') refreshPicker();
-      }, 500);
     });
   });
 }
@@ -12169,11 +12167,11 @@ function renderQExperience(root) {
 function renderRightPlace(root) {
   const fb = Q_EXP_FEEDBACK[state.usedBefore] || Q_EXP_FEEDBACK.new;
   root.innerHTML = `
-    <div class="rightplace-page" style="display:flex;flex-direction:column;gap:24px;width:100%;padding-top:8px;">
-      <h2 class="qexp-sheet-headline" style="font-size:24px;font-weight:400;line-height:32px;color:var(--bod-navy);text-align:center;margin:0;letter-spacing:-0.2px;">${escapeHTML(fb.headline)}</h2>
+    <div style="padding-top: 4px;">
+      <h2 style="font-size:24px;font-weight:400;line-height:32px;color:var(--bod-navy);text-align:center;margin:0 0 24px;letter-spacing:-0.2px;">${escapeHTML(fb.headline)}</h2>
 
       <!-- Bento image grid -->
-      <div style="display:flex;gap:8px;aspect-ratio:1;width:100%;">
+      <div style="display:flex;gap:8px;aspect-ratio:1;width:100%;margin-bottom:24px;">
         <div style="flex:1;border-radius:8px;background:#fdeeec;overflow:hidden;position:relative;">
           <img src="assets/q1-phone-screen.png" alt="Boots Online Doctor app showing treatment" style="position:absolute;left:50%;top:54%;transform:translate(-50%,-50%);width:96%;height:auto;object-fit:contain;" />
         </div>
@@ -12190,12 +12188,8 @@ function renderRightPlace(root) {
       <ul class="qexp-sheet-bullets" style="border:none;padding:0;margin:0;gap:16px;width:100%;">
         ${fb.bullets.map(b => `<li>${escapeHTML(b)}</li>`).join('')}
       </ul>
-
-      <button type="button" class="fnav-next" id="rightplace-continue" style="width:100%;flex:none;height:52px;font-weight:400;">Continue</button>
     </div>
   `;
-
-  document.getElementById('rightplace-continue')?.addEventListener('click', () => goNext());
 }
 
 // Shared helper — renders a Figma-spec selector card (flex row, label flex:1,
@@ -13120,6 +13114,60 @@ function renderDisclaimer(root) {
     el.addEventListener('click', () => {
       const k = el.dataset.check;
       state.disclaimers[k] = !state.disclaimers[k];
+      render();
+    });
+  });
+}
+
+function renderGPDisclaimer(root) {
+  const disclaimers = [
+    { key: 'mounjaro_alcohol', title: 'About Taking Mounjaro', text: 'Drinking alcohol while taking Mounjaro may increase the risk of pancreatitis. If you drink heavily (more than 4-5 drinks a day or binge drinking) we recommend cutting back.' },
+    { key: 'mounjaro_pancreatitis', title: '', text: 'Please note that pancreatitis (inflammation of the pancreas) is a rare but potentially serious side effect with Mounjaro. Get urgent medical help if you have severe, lasting stomach pain that may spread to your back, especially with nausea or vomiting.' },
+    { key: 'mounjaro_hypoglycaemia', title: '', text: 'We also need to let you know an uncommon side effect is hypoglycaemia. Symptoms include sweating, shaking, feeling weak and confused. If your symptoms don\'t improve quickly with food you\'ll need to get medical help.' },
+    { key: 'weightloss_sideeffects', title: 'About Weight Loss & Weight Loss Injections', text: 'Weight loss injections have many side effects, mostly digestive. A few people have severe vomiting, diarrhoea or constipation. Rarely, hospital treatment is needed for side effects. Keeping well hydrated is key.' },
+    { key: 'weightloss_resources', title: '', text: 'Medicine is only one part of losing weight. We provide a range of free resources to help you succeed with weight loss. Look out for emails with more information on these.' },
+  ];
+
+  if (!state.disclaimers.gp_items) {
+    state.disclaimers.gp_items = {};
+    disclaimers.forEach(d => {
+      state.disclaimers.gp_items[d.key] = false;
+    });
+  }
+
+  const allAgreed = disclaimers.every(d => state.disclaimers.gp_items[d.key]);
+
+  root.innerHTML = `
+    <div style="padding-top: 4px;">
+      <h2>Important information about your treatment</h2>
+      <p class="lede">Please read and agree to each of the following before you can continue.</p>
+    </div>
+
+    <div class="disclaimer-body" style="margin-bottom: 0;">
+      ${disclaimers.map((d, i) => `
+        <div style="margin-bottom: 24px; ${d.title ? 'padding-top: 8px;' : ''}">
+          ${d.title ? `<p style="font-weight:600;font-size:14px;color:var(--bod-navy);margin:0 0 12px 0;">${escapeHTML(d.title)}</p>` : ''}
+          <label class="disclaimer-row ${state.disclaimers.gp_items[d.key] ? 'checked' : ''}" data-check="${d.key}">
+            <span class="disclaimer-check">
+              <img src="assets/check-white.svg" alt="" aria-hidden="true" />
+            </span>
+            <span class="disclaimer-row-text">${escapeHTML(d.text)}</span>
+          </label>
+        </div>
+      `).join('')}
+    </div>
+  `;
+
+  root.querySelectorAll('[data-check]').forEach(el => {
+    el.addEventListener('click', () => {
+      const k = el.dataset.check;
+      state.disclaimers.gp_items[k] = !state.disclaimers.gp_items[k];
+      const allChecked = Object.values(state.disclaimers.gp_items).every(v => v);
+      if (allChecked) {
+        state.disclaimers.gp_agreed = true;
+      } else {
+        state.disclaimers.gp_agreed = false;
+      }
       render();
     });
   });
@@ -17258,6 +17306,24 @@ function jumpToScreen(screen) {
     if (!state.paymentMethod) state.paymentMethod = 'card';
     if (!state.orderRef) state.orderRef = 'BOD-WL-' + Math.floor(40000 + Math.random() * 9999);
     history = ['product', 'upsell', 'product-upsell', 'create-account', 'account-details', 'fulfilment', 'payment', 'processing', 'confirmation', 'gp'];
+    lastDirection = 'forward';
+    render();
+    refreshPicker();
+    return;
+  }
+
+  // GP Disclaimer — shown after GP details
+  if (screen === 'gp-disclaimer') {
+    document.getElementById('overlay')?.classList.remove('open');
+    state.disclaimers = { agreed: true, gp_agreed: false, gp_items: { mounjaro_alcohol: false, mounjaro_pancreatitis: false, mounjaro_hypoglycaemia: false, weightloss_sideeffects: false, weightloss_resources: false } };
+    if (!state.product) state.product = 'mounjaro';
+    if (!state.fulfilment) state.fulfilment = 'home';
+    if (state.fulfilment === 'home' && !state.address) state.address = '12 Park Walk, London, SW10 0LE';
+    if (state.fulfilment === 'home' && !state.deliverySpeed) state.deliverySpeed = 'standard';
+    if (!state.paymentMethod) state.paymentMethod = 'card';
+    if (!state.orderRef) state.orderRef = 'BOD-WL-' + Math.floor(40000 + Math.random() * 9999);
+    if (!state.gp) state.gp = { name: 'General Practice', postcode: 'SW10' };
+    history = ['product', 'upsell', 'product-upsell', 'create-account', 'account-details', 'fulfilment', 'payment', 'processing', 'confirmation', 'gp', 'gp-disclaimer'];
     lastDirection = 'forward';
     render();
     refreshPicker();
