@@ -1953,6 +1953,76 @@
   }
   .lp-footer-cqc { font-weight: 600; color: rgba(255,255,255,0.7); margin-bottom: 6px; display: block; }
 
+  /* ── "More than medicine" resource items ── */
+  .lp-resources { display:flex;flex-direction:column;gap:12px;margin-top:16px; }
+  .lp-resource {
+    display:grid;grid-template-columns:52px 1fr;gap:14px;align-items:start;
+    background:#fff;border-radius:12px;padding:14px;border:1px solid var(--bod-line);
+  }
+  .lp-resource-icon {
+    width:52px;height:52px;border-radius:12px;
+    background:var(--bod-pale-blue);color:var(--bod-navy);
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  }
+  .lp-resource h3 { font-size:14px;margin:0 0 4px; }
+  .lp-resource p { font-size:12px;color:var(--ink-2);line-height:1.4;margin:0; }
+
+  /* ── Trust badge row (3-up) ── */
+  .lp-trust-row {
+    display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:18px 0 20px;
+  }
+  .lp-trust-badge {
+    display:flex;flex-direction:column;align-items:center;gap:7px;
+    padding:14px 8px;background:#f5f7fb;border-radius:10px;text-align:center;
+  }
+  .lp-trust-badge-icon {
+    width:36px;height:36px;border-radius:50%;
+    background:var(--bod-deep-blue);color:#fff;
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  }
+  .lp-trust-badge span { font-size:11px;font-weight:600;color:var(--bod-navy);line-height:1.3; }
+
+  /* ── Social proof / testimonial band ── */
+  .lp-social {
+    background:var(--bod-navy);color:#fff;
+    padding:32px 20px 28px;text-align:center;
+    display:flex;flex-direction:column;align-items:center;gap:0;
+  }
+  .lp-social-stars { color:#f5c842;font-size:18px;letter-spacing:2px;margin-bottom:20px; }
+  .lp-social-quote {
+    font-size:22px;font-weight:700;color:#fff;font-style:italic;
+    line-height:1.3;margin:0 0 6px;max-width:280px;
+  }
+  .lp-social-attr { font-size:12px;color:rgba(255,255,255,0.55);margin:0 0 24px; }
+  .lp-social-divider {
+    width:40px;height:1.5px;background:rgba(255,255,255,0.25);margin:0 0 24px;
+  }
+  .lp-social-stat {
+    font-size:48px;font-weight:800;color:#fff;line-height:1;margin-bottom:8px;
+  }
+  .lp-social-stat-text {
+    font-size:13px;color:rgba(255,255,255,0.75);margin:0 0 24px;
+    line-height:1.5;max-width:280px;
+  }
+
+  /* ── Programme features ── */
+  .lp-feature-full {
+    display:flex;flex-direction:column;gap:0;
+    border:1px solid var(--bod-line);border-radius:12px;overflow:hidden;margin-top:16px;
+  }
+  .lp-feature-row {
+    display:grid;grid-template-columns:48px 1fr;gap:14px;align-items:start;
+    padding:14px 14px;background:#fff;border-bottom:1px solid var(--bod-line);
+  }
+  .lp-feature-row:last-child { border-bottom:0; }
+  .lp-feature-icon {
+    width:48px;height:48px;border-radius:10px;
+    background:var(--bod-pale-blue);color:var(--bod-navy);
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  }
+  .lp-feature-row h3 { font-size:14px;margin:0 0 3px; }
+  .lp-feature-row p { font-size:12px;color:var(--ink-2);line-height:1.4;margin:0; }
+
   /* Question option pills, centred text, pill shape, soft-grey fill when
      selected. Keeps the prototype's minimal aesthetic (Inter typography,
      thin border, no shadows). No radio/check indicator, selection is
@@ -10668,11 +10738,12 @@
     <button class="picker-btn" data-jump="product-upsell"><span class="num">28</span>Product Upsell</button>
     <button class="picker-btn" data-jump="create-account"><span class="num">29</span>Account · Auth</button>
     <button class="picker-btn" data-jump="account-details"><span class="num">30</span>Account · Personal details</button>
-    <button class="picker-btn" data-jump="account-processing"><span class="num">31</span>Account · Processing</button>
-    <button class="picker-btn" data-jump="fulfilment"><span class="num">32</span>Fulfilment</button>
-    <button class="picker-btn" data-jump="payment"><span class="num">33</span>Payment</button>
-    <button class="picker-btn" data-jump="processing"><span class="num">34</span>Processing</button>
-    <button class="picker-btn" data-jump="confirmation"><span class="num">35</span>Payment set up</button>
+    <button class="picker-btn" data-jump="fulfilment"><span class="num">31</span>Fulfilment</button>
+    <button class="picker-btn" data-jump="delivery-address"><span class="num">32</span>Delivery · Add address</button>
+    <button class="picker-btn" data-jump="find-store"><span class="num">33</span>Store · Find store</button>
+    <button class="picker-btn" data-jump="payment"><span class="num">34</span>Payment</button>
+    <button class="picker-btn" data-jump="processing"><span class="num">35</span>Processing</button>
+    <button class="picker-btn" data-jump="confirmation"><span class="num">36</span>Payment set up</button>
 
     <div class="picker-section-title">Post-order</div>
     <button class="picker-btn" data-jump="gp"><span class="num">36</span>Add your GP</button>
@@ -11263,7 +11334,7 @@ function nextStep(step) {
     case 'analysing':        return 'product';
     case 'product':          return 'upsell';
     case 'product-details':  return 'upsell';
-    case 'upsell':           return 'product-upsell';
+    case 'upsell':           return 'create-account'; // product-upsell hidden from journey (keep for later)
     case 'product-upsell':   return 'create-account';
     case 'gp':               return 'photo-id';
     case 'photo-id':         return 'gp-disclaimer';
@@ -11278,8 +11349,9 @@ function nextStep(step) {
     case 'account':          return null;
     case 'create-account':       return 'account-details';
     case 'account-details':      return 'fulfilment';
-    case 'account-processing':   return 'fulfilment';
-    case 'fulfilment':           return 'payment';
+    case 'fulfilment':           return state.fulfilment === 'store' ? 'find-store' : 'delivery-address';
+    case 'delivery-address':     return 'payment';
+    case 'find-store':           return 'payment';
     case 'payment':              return 'processing';
     case 'processing':       return 'confirmation';
     case 'confirmation':     return 'gp';
@@ -11299,12 +11371,6 @@ function goNext() {
 
 
   if (!validate(step, true)) return;
-
-  // Photo ID verification: launch camera capture instead of advancing
-  if (step === 'photo-id') {
-    startIDPhotoCapture();
-    return;
-  }
 
   // Medical Questions wizard: each Continue advances the internal sub-step
   // until the final question is answered, then advances to the next journey
@@ -11449,17 +11515,17 @@ function validate(step, showErrors = false) {
     case 'clinician-submit':     return !!state.clinicianConsent;
     case 'submitting':          return true;
     case 'account':             return true;
-    case 'account-processing':  return true;
     case 'disclaimer':      return !!state.disclaimers.agreed;
     case 'product':         return !!state.product;
     case 'product-details': return !!state.viewingProduct;
     case 'upsell':          return !!state.product && state.coaching !== null;
     case 'product-upsell':  return state.vitamins === true || state.vitamins === false;
     case 'fulfilment':
-      if (!state.fulfilment) return false;
-      if (state.fulfilment === 'home') return !!state.address && !!state.deliverySpeed;
-      if (state.fulfilment === 'store') return !!state.store;
-      return false;
+      return !!state.fulfilment;
+    case 'delivery-address':
+      return !!state.address && !!state.deliverySpeed;
+    case 'find-store':
+      return !!state.store;
     case 'create-account':
       // Auth step — a sign-in method must be chosen (buttons advance directly).
       return !!state.signInMethod;
@@ -11578,11 +11644,12 @@ function progressPercent(step) {
     'product-upsell':  54,
     'create-account':       56,
     'account-details':      58,
-    'account-processing':   60,
-    'fulfilment':      64,
-    'address':         66,   // overlay reference only
-    'store':           66,   // overlay reference only
-    'payment':              70,
+    'fulfilment':         64,
+    'delivery-address':   70,
+    'find-store':         70,
+    'address':            70,
+    'store':              70,
+    'payment':            76,
     'processing':      76,
     'confirmation':    80,
     'gp':              85,
@@ -11622,8 +11689,9 @@ const PHASE_MAP = {
   'product-upsell':     { phase: 2, label: 'Your Treatment', pct: 46 },
   'create-account':     { phase: 2, label: 'Your Order',    pct: 52 },
   'account-details':    { phase: 2, label: 'Your Order',    pct: 58 },
-  'account-processing': { phase: 2, label: 'Your Order',    pct: 64 },
   'fulfilment':         { phase: 2, label: 'Your Order',    pct: 76 },
+  'delivery-address':   { phase: 2, label: 'Your Order',    pct: 83 },
+  'find-store':         { phase: 2, label: 'Your Order',    pct: 83 },
   'payment':            { phase: 2, label: 'Your Order',    pct: 90 },
   'processing':         { phase: 2, label: 'Your Order',    pct: 100 },
   // Phase 3 — Details
@@ -11657,9 +11725,10 @@ const SECTION_LABELS = {
   'upsell':             'Your treatment',
   'product-upsell':     'Your treatment',
   'fulfilment':         'Delivery',
+  'delivery-address':   'Delivery',
+  'find-store':         'Delivery',
   'create-account':     'Your account',
   'account-details':    'Your account',
-  'account-processing': 'Your account',
   'payment':            'Payment',
   'processing':         'Payment',
   'confirmation':       'Complete',
@@ -11704,7 +11773,8 @@ const APP_TITLES = {
   'store':           BRAND_TITLE,
   'create-account':       BRAND_TITLE,
   'account-details':      BRAND_TITLE,
-  'account-processing':   BRAND_TITLE,
+  'delivery-address':     BRAND_TITLE,
+  'find-store':           BRAND_TITLE,
   'payment':              BRAND_TITLE,
   'processing':      BRAND_TITLE,
   'confirmation':    BRAND_TITLE,
@@ -11746,7 +11816,7 @@ function render() {
   // payment/processing animations, and on the final account dashboard.
   const btnExit = document.getElementById('btn-exit');
   if (btnExit) {
-    btnExit.disabled = step === 'landing' || step === 'analysing' || step === 'account-processing' || step === 'processing' || step === 'submitting' || step === 'confirmation' || step === 'account';
+    btnExit.disabled = step === 'landing' || step === 'analysing' || step === 'processing' || step === 'submitting' || step === 'confirmation' || step === 'account';
   }
 
   // PDP keeps the sticky header but exposes its Back chevron (other screens
@@ -11803,10 +11873,11 @@ function render() {
     'product-details': renderProductDetails,
     'upsell':          renderUpsell,
     'product-upsell':  renderProductUpsell,
-    'fulfilment':      renderFulfilment,
+    'fulfilment':         renderFulfilment,
+    'delivery-address':   renderDeliveryAddress,
+    'find-store':         renderFindStore,
     'create-account':       renderCreateAccount,
     'account-details':      renderAccountDetails,
-    'account-processing':   renderAccountProcessing,
     'payment':              renderPayment,
     'processing':      renderProcessing,
     'confirmation':    renderConfirmation,
@@ -11846,7 +11917,7 @@ function journeyPhase(step) {
     { label: 'About You',       steps: ['q-reasons','disclaimer','q-height-weight','q-gender','q-ethnicity','q-name'] },
     { label: 'Medical History', steps: ['q-medical-tbd','analysing'] },
     { label: 'Your Treatment',  steps: ['product','product-details','upsell','product-upsell'] },
-    { label: 'Your Order',      steps: ['create-account','account-details','account-processing','fulfilment','payment','processing','confirmation'] },
+    { label: 'Your Order',      steps: ['create-account','account-details','fulfilment','delivery-address','find-store','payment','processing','confirmation'] },
     { label: 'Your Details',    steps: ['gp','photo-id','gp-disclaimer','photos-intro','photos-front-guide','photos-front','photos-side-guide','photos-side','clinician-submit','submitting','account'] },
   ];
   for (let i = 0; i < PHASES.length; i++) {
@@ -11866,38 +11937,41 @@ function renderFooter(step) {
   footer.classList.remove('footer-payment', 'footer-pdp-selected');
 
   // No footer on these screens
-  if (['landing', 'analysing', 'processing', 'account-processing', 'submitting', 'account', 'create-account', 'account-details', 'q-experience', 'q-intro'].includes(step)) {
+  if (['landing', 'analysing', 'processing', 'submitting', 'account', 'create-account', 'account-details', 'q-experience', 'q-intro'].includes(step)) {
     footer.style.display = 'none';
     return;
   }
 
-  // Product page (Choose Treatment) — show footer with selected product
+  // Product page (Choose Treatment) — standard fnav footer matching Medical/Questions
   if (step === 'product') {
     const p = PRODUCTS[state.product];
     if (!p) { footer.style.display = 'none'; return; }
-    const isSelected = state.product === p.key;
     footer.style.display = 'flex';
-    footer.classList.add('footer-pdp-selected');
-    const thumbHtml = p.pdpThumbImage
-      ? `<img src="${p.pdpThumbImage}" alt="${escapeHTML(p.name)}" style="width:100%;height:100%;object-fit:cover;display:block;" />`
-      : productIllustration(p);
+    const jp = journeyPhase(step);
+    const activePhase = jp ? jp.phase : 0;
+    const phasePct    = jp ? jp.pct   : 0;
+    const sectionTitle = (jp && jp.label) || 'Your Treatment';
+    let phasesHtml = '<div class="fnav-phases" aria-label="Journey progress">';
+    for (let ph = 1; ph <= 4; ph++) {
+      if (ph < activePhase)        phasesHtml += `<div class="fnav-ph fnav-ph--done"><div class="fnav-ph-fill"></div></div>`;
+      else if (ph === activePhase) phasesHtml += `<div class="fnav-ph fnav-ph--active"><div class="fnav-ph-fill" style="width:${phasePct}%"></div></div>`;
+      else                         phasesHtml += `<div class="fnav-ph"></div>`;
+    }
+    phasesHtml += '</div>';
+    const isBackDisabled = history.length <= 1;
     footer.innerHTML = `
-      <div class="pdp-footer-summary pdp-mini-hidden" style="border-bottom:1px solid var(--bod-line);padding-bottom:12px;margin-bottom:0;">
-        <div class="pdp-footer-img">${thumbHtml}</div>
-        <div class="pdp-footer-meta">
-          <div class="pdp-footer-name">${escapeHTML(p.name)}${p.trademark ? '<span class="tm">®</span>' : ''}</div>
-          <div class="pdp-footer-price">£${(p.price * 0.9).toFixed(2)}<span>/month</span> <s style="color:#858585;font-weight:400;font-size:11px;">£${p.price.toFixed(2)}</s></div>
-        </div>
-      </div>
       <div class="fnav">
         <div class="fnav-titleprog">
-          <span class="fnav-step-title">Your Treatment</span>
+          <span class="fnav-step-title">${escapeHTML(sectionTitle)}</span>
+          ${phasesHtml}
         </div>
         <div class="fnav-btns">
+          <button class="fnav-back" id="btn-back-footer"${isBackDisabled ? ' disabled' : ''}>Back</button>
           <button class="fnav-next" id="btn-next-footer">Continue with ${escapeHTML(p.name)}</button>
         </div>
       </div>
     `;
+    document.getElementById('btn-back-footer')?.addEventListener('click', handleBack);
     document.getElementById('btn-next-footer')?.addEventListener('click', () => goNext());
     return;
   }
@@ -11911,16 +11985,6 @@ function renderFooter(step) {
   // Payment: footer stays visible (the Continue button is disabled via
   // validate() until a payment method is selected).
 
-  // Fulfilment: only show after address/store is chosen
-  if (step === 'fulfilment') {
-    const hasData = state.fulfilment === 'home'
-      ? !!state.address
-      : (state.fulfilment === 'store' ? !!state.store : false);
-    if (!hasData) {
-      footer.style.display = 'none';
-      return;
-    }
-  }
 
   // PDP: special footer with product summary strip + Continue
   if (step === 'product-details') {
@@ -11969,6 +12033,38 @@ function renderFooter(step) {
     return;
   }
 
+  // Photo ID: standard fnav with inline capture handler + Skip link
+  if (step === 'photo-id') {
+    footer.style.display = 'flex';
+    const jp = journeyPhase(step);
+    const activePhase = jp ? jp.phase : 0;
+    const phasePct    = jp ? jp.pct   : 0;
+    const sectionTitle = (jp && jp.label) || 'Your Details';
+    const isBackDisabled = history.length <= 1;
+    let phasesHtml = '<div class="fnav-phases" aria-label="Journey progress">';
+    for (let ph = 1; ph <= 4; ph++) {
+      if (ph < activePhase)        phasesHtml += `<div class="fnav-ph fnav-ph--done"><div class="fnav-ph-fill"></div></div>`;
+      else if (ph === activePhase) phasesHtml += `<div class="fnav-ph fnav-ph--active"><div class="fnav-ph-fill" style="width:${phasePct}%"></div></div>`;
+      else                         phasesHtml += `<div class="fnav-ph"></div>`;
+    }
+    phasesHtml += '</div>';
+    footer.innerHTML = `
+      <div class="fnav">
+        <div class="fnav-titleprog">
+          <span class="fnav-step-title">${escapeHTML(sectionTitle)}</span>
+          ${phasesHtml}
+        </div>
+        <div class="fnav-btns">
+          <button class="fnav-back" id="btn-back-footer"${isBackDisabled ? ' disabled' : ''}>Back</button>
+          <button class="fnav-next" id="btn-next-footer">Take ID Photo</button>
+        </div>
+      </div>
+    `;
+    document.getElementById('btn-back-footer')?.addEventListener('click', handleBack);
+    document.getElementById('btn-next-footer')?.addEventListener('click', captureIDPhotoInline);
+    return;
+  }
+
   // ── Standard fnav footer (all other screens) ──────────────────────────────
   footer.style.display = 'flex';
 
@@ -11978,7 +12074,7 @@ function renderFooter(step) {
   // Screens where Back doesn't make sense (terminal / no history)
   const hideBack = step === 'confirmation';
   const isBackDisabled = history.length <= 1
-    || ['processing', 'account-processing', 'confirmation', 'analysing', 'landing'].includes(step);
+    || ['processing', 'confirmation', 'analysing', 'landing'].includes(step);
 
   // Build the 4-phase progress tracker HTML (Figma BOD masthead pattern).
   const jp = journeyPhase(step);
@@ -12173,92 +12269,213 @@ const MOUNJARO_DOSES = [
 ];
 
 function renderLanding(root) {
+  const checkIcon = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
+
   root.innerHTML = `
-    <div class="landing-page">
-      <div class="landing-hero">Weight loss hero image</div>
+  <div class="lp">
 
-      <div class="landing-card">
-        <h3 class="landing-card-title">Weight loss treatment from the UK's trusted healthcare provider</h3>
-        <ul class="landing-usps">
-          <li>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/></svg>
-            <span>Personalised treatment recommendations from UK-registered clinicians</span>
-          </li>
-          <li>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/></svg>
-            <span>Discreet delivery with nutrition and fitness support included</span>
-          </li>
-          <li>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/></svg>
-            <span>Ongoing care with regular clinician reviews and 24/7 support</span>
-          </li>
-        </ul>
+    <!-- ── Site header (mirrors live BOD chrome) ── -->
+    <div class="lp-sitehead">
+      <div class="lp-sitelogo">
+        <div class="bod-logo" aria-label="Boots Online Doctor" style="display:flex;align-items:center;gap:8px;">
+          <img src="assets/bod-logo-figma.png" alt="Boots Online Doctor" style="height:26px;filter:brightness(0) invert(1);" />
+        </div>
+        <svg class="lp-burger" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
       </div>
-
-      <div class="landing-cta">
-        <h2 class="landing-cta-headline">New to Weight Loss medication?</h2>
-        <button type="button" class="landing-cta-btn" id="landing-get-started">Get Started</button>
-        <p class="landing-login">Got a BOD account? <a id="landing-login">Log In</a></p>
+      <div class="lp-sitenav">
+        <a class="current">Weight loss</a>
+        <a>Sexual health</a>
+        <a>Acne &amp; skin</a>
+        <a>Women’s health</a>
+        <a>Men’s health</a>
+        <a>General health</a>
       </div>
+    </div>
 
-      <div class="landing-howitworks">
-        <div class="landing-howitworks-title">How it works</div>
-        <div class="landing-howitworks-steps">
-          <div class="landing-howitworks-step">
-            <div class="landing-howitworks-icon" aria-hidden="true">
-              <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="6" y="3.5" width="12" height="17" rx="1.5"/>
-                <path d="M9 3.5h6v2H9z" fill="currentColor"/>
-                <rect x="9" y="8" width="2" height="2" rx="0.3"/>
-                <line x1="13" y1="9" x2="16" y2="9"/>
-                <rect x="9" y="12" width="2" height="2" rx="0.3"/>
-                <line x1="13" y1="13" x2="16" y2="13"/>
-                <rect x="9" y="16" width="2" height="2" rx="0.3"/>
-                <line x1="13" y1="17" x2="16" y2="17"/>
-              </svg>
-            </div>
-            <h3 class="landing-howitworks-step-title">Complete online consultation</h3>
-            <p class="landing-howitworks-step-text">Tell us your health history, select pick up in store or delivery, make payment. Takes 5–10 minutes.</p>
+    <!-- ── Hero ── -->
+    <section class="lp-hero" style="padding-bottom:28px;">
+      <span class="lp-eyebrow">Weight loss service</span>
+      <h1 style="margin-bottom:10px;">Change starts today</h1>
+      <p class="lp-hero-sub">360° support you can trust to help you lose weight for good.</p>
+      <p class="lp-hero-body">Our weight loss programme combines treatment with expert clinical care, personalised support and practical tools to help you build healthy habits for life.</p>
+      <div class="lp-cta-row" style="margin-top:18px;">
+        <button type="button" class="lp-btn lp-btn-primary lp-btn-block" id="landing-get-started" style="height:52px;font-size:15px;border-radius:999px;">Get started</button>
+        <button type="button" class="lp-btn lp-btn-secondary lp-btn-block" style="height:52px;font-size:15px;border-radius:999px;" id="landing-login">Log in to my account</button>
+      </div>
+      <div class="lp-trust" style="margin-top:16px;justify-content:center;">
+        <span class="stars">★★★★★</span>
+        <span>Rated Excellent · 90% patient satisfaction</span>
+      </div>
+    </section>
+
+    <!-- ── Our weight loss programme ── -->
+    <section style="background:#fff;border-top:1px solid var(--bod-line);padding:28px 20px 24px;">
+      <span class="lp-eyebrow">Our weight loss programme</span>
+      <h2 style="margin-bottom:8px;">More than just medication</h2>
+      <p style="font-size:13px;color:var(--ink-2);line-height:1.5;">A complete programme of treatment, coaching and tools to help you lose weight and keep it off.</p>
+
+      <div class="lp-feature-full">
+        <div class="lp-feature-row">
+          <div class="lp-feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2v-4M9 21H5a2 2 0 0 1-2-2v-4m0 0h18"/></svg>
           </div>
-
-          <div class="landing-howitworks-step">
-            <div class="landing-howitworks-icon" aria-hidden="true">
-              <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="8" r="3.5"/>
-                <path d="M5 21c0-3.5 3.1-6.5 7-6.5s7 3 7 6.5"/>
-                <path d="M10 11.5 10 14a2 2 0 0 0 4 0v-2.5"/>
-                <circle cx="14.5" cy="16" r="0.6" fill="currentColor"/>
-              </svg>
-            </div>
-            <h3 class="landing-howitworks-step-title">Clinical assessment</h3>
-            <p class="landing-howitworks-step-text">We’ll review everything within 24 hours and prescribe treatment if appropriate. We’ll message or call you if we have any follow-up questions.</p>
+          <div>
+            <h3>Evidence-based treatment</h3>
+            <p>Access genuine treatment if suitable, alongside help with healthy lifestyle changes to support your goals.</p>
           </div>
-
-          <div class="landing-howitworks-step">
-            <div class="landing-howitworks-icon" aria-hidden="true">
-              <svg width="64" height="56" viewBox="0 0 32 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="2" y="5" width="11" height="14" rx="0.5"/>
-                <path d="M2 9 L13 9"/>
-                <path d="M5 9 L5 5 M10 9 L10 5"/>
-                <rect x="6" y="13" width="3" height="6"/>
-                <path d="M16 12 L26 12 L29 15 L29 19 L16 19 Z"/>
-                <circle cx="19" cy="20" r="1.5"/>
-                <circle cx="26" cy="20" r="1.5"/>
-                <text x="7.5" y="8" font-family="Inter" font-size="2" font-weight="700" fill="currentColor" text-anchor="middle" stroke="none">Boots</text>
-                <text x="22.5" y="16" font-family="Inter" font-size="2" font-weight="700" fill="currentColor" text-anchor="middle" stroke="none">Boots</text>
-              </svg>
-            </div>
-            <h3 class="landing-howitworks-step-title">Pick up in store or delivery to your door</h3>
-            <p class="landing-howitworks-step-text">We provide simple instructions on how to take your treatment, and will follow up with advice and support on how to manage your weight.</p>
+        </div>
+        <div class="lp-feature-row">
+          <div class="lp-feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <div>
+            <h3>1-to-1 coaching</h3>
+            <p>Work with a health coach on a personalised programme with guidance on nutrition, movement and more.</p>
+          </div>
+        </div>
+        <div class="lp-feature-row">
+          <div class="lp-feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.9a16 16 0 0 0 6.09 6.09l1.04-.93a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          </div>
+          <div>
+            <h3>Dedicated team, 360° support</h3>
+            <p>Get advice from our GPs, pharmacists, nurses, nutrition and wellness experts and coaches.</p>
+          </div>
+        </div>
+        <div class="lp-feature-row">
+          <div class="lp-feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </div>
+          <div>
+            <h3>Ongoing care</h3>
+            <p>12 extra months of free clinical support when you stop treatment, so you can maintain your goals long-term.</p>
           </div>
         </div>
       </div>
+
+      <!-- Trust badges -->
+      <div class="lp-trust-row">
+        <div class="lp-trust-badge">
+          <div class="lp-trust-badge-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <span>Trusted UK brand</span>
+        </div>
+        <div class="lp-trust-badge">
+          <div class="lp-trust-badge-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </div>
+          <span>1,500+ Boots stores</span>
+        </div>
+        <div class="lp-trust-badge">
+          <div class="lp-trust-badge-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="1"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+          </div>
+          <span>Discreet home delivery</span>
+        </div>
+      </div>
+
+      <button type="button" class="lp-btn lp-btn-primary lp-btn-block" id="landing-get-started-2" style="height:52px;font-size:15px;border-radius:999px;">Get started</button>
+      <p style="text-align:center;font-size:12px;color:var(--muted);margin-top:10px;">Got a BOD account? <a id="landing-login-2" style="color:var(--bod-deep-blue);font-weight:600;cursor:pointer;text-decoration:underline;">Log in</a></p>
+    </section>
+
+    <!-- ── More than medicine ── -->
+    <section style="background:#f5f7fb;border-top:1px solid var(--bod-line);padding:28px 20px 24px;">
+      <span class="lp-eyebrow">More than medicine</span>
+      <h2 style="margin-bottom:8px;">Extra resources for your journey</h2>
+      <p style="font-size:13px;color:var(--ink-2);line-height:1.5;margin-bottom:0;">We offer a range of extra resources to help you reach your weight loss goals. Because real results need real support.</p>
+
+      <div class="lp-resources">
+        <div class="lp-resource">
+          <div class="lp-resource-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+          </div>
+          <div>
+            <h3>Live webinars</h3>
+            <p>Learn from the team and speak to them directly on a range of weight loss topics.</p>
+          </div>
+        </div>
+        <div class="lp-resource">
+          <div class="lp-resource-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+          </div>
+          <div>
+            <h3>Tracker app</h3>
+            <p>Set goals, track habits and follow our 10-week programme – all in our free app.</p>
+          </div>
+        </div>
+        <div class="lp-resource">
+          <div class="lp-resource-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>
+          </div>
+          <div>
+            <h3>Weight Loss 360° podcast</h3>
+            <p>Tune in for a deeper dive into topics like sleep, exercise and managing cravings.</p>
+          </div>
+        </div>
+        <div class="lp-resource">
+          <div class="lp-resource-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+          </div>
+          <div>
+            <h3>Exercise videos</h3>
+            <p>Gentle, expert-led exercises to help you move more confidently at your own pace.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Social proof ── -->
+    <div class="lp-social">
+      <div class="lp-social-stars">★★★★★</div>
+      <p class="lp-social-quote">"This is life changing for me."</p>
+      <p class="lp-social-attr">— Weight loss patient</p>
+      <div class="lp-social-divider"></div>
+      <div class="lp-social-stat">90%</div>
+      <p class="lp-social-stat-text">of our Weight Loss patients are happy with our service, from the convenience to the extra care we take.</p>
+      <button type="button" id="landing-get-started-3" style="display:inline-flex;align-items:center;justify-content:center;height:52px;padding:0 32px;border-radius:999px;background:#fff;color:var(--bod-navy);border:0;font:inherit;font-size:15px;font-weight:700;cursor:pointer;">Get started today</button>
     </div>
+
+    <!-- ── Footer ── -->
+    <footer class="lp-footer">
+      <div class="lp-footer-grp">
+        <div class="lp-footer-title">Our services</div>
+        <ul>
+          <li>Weight loss</li><li>Women’s health</li><li>Men’s health</li>
+          <li>Acne &amp; skin</li><li>Sexual health</li><li>General health</li>
+        </ul>
+      </div>
+      <div class="lp-footer-grp">
+        <div class="lp-footer-title">About us</div>
+        <ul>
+          <li>Meet the team</li><li>Patient guide</li>
+          <li>Terms and conditions</li><li>Privacy policy</li>
+        </ul>
+      </div>
+      <div class="lp-footer-grp">
+        <div class="lp-footer-title">Patient services</div>
+        <ul>
+          <li>FAQs</li><li>Contact us</li>
+          <li>Pick up and delivery</li><li>Store locator</li>
+        </ul>
+      </div>
+      <div class="lp-footer-legal">
+        <span class="lp-footer-cqc">Boots Digital Health Ltd is registered with the Care Quality Commission.</span>
+        ©2024 Boots Digital Health Ltd
+      </div>
+    </footer>
+
+  </div>
   `;
 
   root.querySelector('#landing-get-started').addEventListener('click', goNext);
+  root.querySelector('#landing-get-started-2').addEventListener('click', goNext);
+  root.querySelector('#landing-get-started-3').addEventListener('click', goNext);
   root.querySelector('#landing-login').addEventListener('click', () => {
-    showToast('Log In flow not built in this prototype');
+    showToast('Log in flow not built in this prototype');
+  });
+  root.querySelector('#landing-login-2')?.addEventListener('click', () => {
+    showToast('Log in flow not built in this prototype');
   });
 }
 
@@ -13262,9 +13479,38 @@ function renderPhotoID(root) {
       }
     </style>
 
-    <div style="margin: 24px 0 0; padding: 0 24px;">
+    <div style="margin: 16px 0 0; padding: 0 24px; text-align: center;">
+      <button type="button" id="btn-skip-id-inline" style="background:none;border:0;padding:8px;cursor:pointer;font:inherit;font-size:14px;color:var(--bod-navy);text-decoration:underline;">Skip for now</button>
     </div>
   `;
+
+  root.getElementById?.('btn-skip-id-inline')?.addEventListener('click', () => goNext());
+  root.querySelector('#btn-skip-id-inline')?.addEventListener('click', () => goNext());
+}
+
+function captureIDPhotoInline() {
+  const screen = body.querySelector('.screen');
+  if (!screen) return;
+  footer.style.display = 'none';
+
+  screen.innerHTML = `
+    <div style="padding:24px;">
+      <div class="cam-confirmed-frame">
+        <div class="cam-confirmed-icon">
+          <div class="cam-confirmed-tick">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="cam-confirmed-label">ID photo taken</div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  setTimeout(() => {
+    if (currentStep() !== 'photo-id') return;
+    state.idPhotoTaken = true;
+    goNext();
+  }, 1000);
 }
 
 function startIDPhotoCapture() {
@@ -13744,19 +13990,21 @@ function renderProduct(root) {
   root.querySelectorAll('[data-select-product]').forEach(el => {
     el.addEventListener('click', (e) => {
       e.stopPropagation();
-      openConfirm(el.dataset.selectProduct);
+      state.product = el.dataset.selectProduct;
+      render();
     });
   });
 
   if (productListView === 'carousel') {
-    // Tapping the front card opens the confirm overlay. Tapping a side card
-    // brings it to the front first (no overlay yet).
+    // Tapping the front card selects it directly. Tapping a side card
+    // brings it to the front first.
     root.querySelectorAll('[data-deck-index]').forEach(wrap => {
       wrap.addEventListener('click', (e) => {
         if (e.target.closest('[data-view-details], [data-carousel], [data-select-product]')) return;
         const idx = parseInt(wrap.dataset.deckIndex, 10);
         if (idx === productCarouselIndex) {
-          openConfirm(deckProducts[idx].key);
+          state.product = deckProducts[idx].key;
+          render();
         } else {
           productCarouselIndex = idx;
           render();
@@ -14288,18 +14536,6 @@ function renderProductDetails(root) {
 }
 
 function renderFulfilment(root) {
-  // While transitioning to Payment after the user picks their address/store,
-  // show a brief loading state so the navigation feels responsive.
-  if (state.fulfilmentLoading) {
-    root.innerHTML = `
-      <div class="fulfilment-loading">
-        <div class="spinner lg dark"></div>
-        <p>Updating your order…</p>
-      </div>
-    `;
-    return;
-  }
-
   const cheapestDelivery = Math.min(...DELIVERY_OPTIONS.map(d => d.price));
   const options = [
     {
@@ -14330,11 +14566,6 @@ function renderFulfilment(root) {
     <div style="display:flex;flex-direction:column;gap:12px;width:100%;margin-top:24px;">
     ${options.map(o => {
       const isSel = state.fulfilment === o.key;
-      const data = o.key === 'home' ? state.address : (state.store ? `${state.store.name}, ${state.store.addr}` : null);
-      const dataLabel = o.key === 'home' ? 'Deliver to' : 'Collect from';
-      const deliveryOpt = o.key === 'home' && state.deliverySpeed
-        ? DELIVERY_OPTIONS.find(d => d.id === state.deliverySpeed) : null;
-      const addButtonLabel = o.key === 'home' ? 'Add address' : 'Select Store';
       const checkSvg = '<svg width="14" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
       const tickSvg = '<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="var(--bod-success)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
       return `
@@ -14348,59 +14579,359 @@ function renderFulfilment(root) {
           <ul class="ful-card-usps">
             ${o.usps.map(u => `<li><span class="ful-tick">${tickSvg}</span><span>${escapeHTML(u)}</span></li>`).join('')}
           </ul>
-          ${isSel && data ? `
-            <div class="ful-card-detail">
-              <div><strong>${dataLabel}</strong><br>${escapeHTML(data)}${deliveryOpt ? `<br><span style="font-size:12px;">${escapeHTML(deliveryOpt.label)} · £${deliveryOpt.price.toFixed(2)}</span>` : ''}</div>
-              <button type="button" class="ful-card-detail-edit" data-edit-overlay="${o.key === 'home' ? 'address' : 'store'}">Edit</button>
-            </div>
-          ` : ''}
-          ${isSel && !data ? `
-            <button type="button" class="rx-pc-cta" style="margin-top:8px;" data-open-overlay="${o.key === 'home' ? 'address' : 'store'}">${addButtonLabel}</button>
-          ` : ''}
         </div>
       `;
     }).join('')}
     </div>
   `;
 
-  // Selecting a fulfilment option immediately opens the relevant address /
-  // store overlay so the user can pick their address with one fewer tap.
-  // The chosen overlay then auto-advances to Payment once a value is picked.
-  const handleSelect = key => {
-    state.fulfilment = key;
-    // Clear the OTHER side's data + the auto-advance flag so the new path
-    // starts clean.
-    if (key === 'home') { state.store = null; }
-    if (key === 'store') { state.address = null; state.deliverySpeed = null; }
-    state.fulfilmentAutoAdvance = true;
-    render();
-    // Open the overlay AFTER the re-render so the underlying screen is in
-    // sync (selected card highlighted).
-    requestAnimationFrame(() => {
-      openOverlay(key === 'home' ? 'address' : 'store', 'select');
-    });
-  };
-
   root.querySelectorAll('[data-fulfilment]').forEach(el => {
-    el.addEventListener('click', (e) => {
-      // Don't re-trigger when the user is clicking an inner button (Edit, etc.)
-      if (e.target.closest('[data-edit-overlay], [data-open-overlay], .fulfilment-summary-edit')) return;
-      handleSelect(el.dataset.fulfilment);
+    el.addEventListener('click', () => {
+      const key = el.dataset.fulfilment;
+      state.fulfilment = key;
+      if (key === 'home') { state.store = null; }
+      if (key === 'store') { state.address = null; state.deliverySpeed = null; }
+      render();
     });
   });
-  root.querySelectorAll('[data-switch]').forEach(el => {
-    el.addEventListener('click', () => handleSelect(el.dataset.switch));
-  });
-  root.querySelectorAll('[data-open-overlay]').forEach(el => {
-    el.addEventListener('click', e => {
-      e.stopPropagation();
-      openOverlay(el.dataset.openOverlay, 'select');
+}
+
+function renderDeliveryAddress(root) {
+  const checkSvg = '<svg width="14" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+
+  if (state.address && !state.addressManual) {
+    root.innerHTML = `
+      <div style="margin:0 -24px;padding:24px 24px 0;width:calc(100% + 48px);box-sizing:border-box;">
+        <p style="font-size:24px;font-weight:400;line-height:32px;letter-spacing:0.2px;color:var(--bod-navy);margin:0 0 4px;">Add delivery address</p>
+        <p style="font-size:14px;color:var(--bod-navy);margin:8px 0 0;line-height:20px;">Confirm your address and choose a delivery option.</p>
+      </div>
+
+      <div class="ov-deliver-card" style="margin-top:24px;">
+        <div class="ov-deliver-head">
+          <span class="ov-deliver-label">Deliver to</span>
+          <button type="button" class="ov-deliver-change" id="pg-change-address">Change</button>
+        </div>
+        <div class="ov-deliver-value">${escapeHTML(state.address)}</div>
+      </div>
+
+      <div class="delivery-options" style="margin-top:16px;">
+        <h3>Delivery options</h3>
+        ${DELIVERY_OPTIONS.map(o => `
+          <div class="delivery-option ${state.deliverySpeed === o.id ? 'selected' : ''}" data-delivery="${o.id}">
+            <div class="delivery-option-text">
+              <div class="delivery-option-label">${escapeHTML(o.label)}</div>
+            </div>
+            <div class="delivery-option-price">£${o.price.toFixed(2)}</div>
+            <div class="delivery-option-check">${checkSvg}</div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+
+    document.getElementById('pg-change-address').addEventListener('click', () => {
+      state.address = null;
+      state.postcodeQuery = '';
+      state.addressOptions = [];
+      renderDeliveryAddress(root);
+      renderFooter();
+    });
+    root.querySelectorAll('[data-delivery]').forEach(el => {
+      el.addEventListener('click', () => {
+        state.deliverySpeed = el.dataset.delivery;
+        renderDeliveryAddress(root);
+        renderFooter();
+      });
+    });
+    return;
+  }
+
+  root.innerHTML = `
+    <div style="margin:0 -24px;padding:24px 24px 0;width:calc(100% + 48px);box-sizing:border-box;">
+      <p style="font-size:24px;font-weight:400;line-height:32px;letter-spacing:0.2px;color:var(--bod-navy);margin:0 0 4px;">Add delivery address</p>
+      <p style="font-size:14px;color:var(--bod-navy);margin:8px 0 0;line-height:20px;">Enter your UK postcode to find your address, or add it manually.</p>
+    </div>
+
+    ${!state.addressManual ? `
+      <div class="postcode-row" style="margin-top:24px;">
+        <div class="field has-icon" data-field="postcode" style="margin:0;">
+          <label for="pg-postcode">Postcode</label>
+          <span class="field-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </span>
+          <input id="pg-postcode" type="text" value="${escapeHTML(state.postcodeQuery)}" placeholder="e.g. SW10 0LE" autocomplete="postal-code" />
+        </div>
+        <button class="btn btn-primary" id="btn-pg-lookup" style="height:50px;">Find</button>
+      </div>
+
+      ${gpPostcodeChipHTML()}
+
+      <div id="pg-lookup-results"></div>
+
+      <div style="text-align:center;margin-top:16px;">
+        <button class="btn-text" id="btn-pg-manual">Enter address manually</button>
+      </div>
+    ` : `
+      <div style="margin-top:24px;">
+        <div class="field" data-field="manual-line1">
+          <label for="pg-m-line1">Address line 1</label>
+          <input id="pg-m-line1" type="text" value="${escapeHTML(state.manualAddress.line1)}" placeholder="House number and street" autocomplete="address-line1" />
+          <div class="err">Required</div>
+        </div>
+        <div class="field" data-field="manual-line2">
+          <label for="pg-m-line2">Address line 2 (optional)</label>
+          <input id="pg-m-line2" type="text" value="${escapeHTML(state.manualAddress.line2)}" autocomplete="address-line2" placeholder="Apartment, suite, etc." />
+        </div>
+        <div class="row-2">
+          <div class="field" data-field="manual-city">
+            <label for="pg-m-city">Town / City</label>
+            <input id="pg-m-city" type="text" value="${escapeHTML(state.manualAddress.city)}" autocomplete="address-level2" placeholder="London" />
+            <div class="err">Required</div>
+          </div>
+          <div class="field" data-field="manual-county">
+            <label for="pg-m-county">County</label>
+            <input id="pg-m-county" type="text" value="${escapeHTML(state.manualAddress.county)}" autocomplete="address-level1" placeholder="Greater London" />
+          </div>
+        </div>
+        <div class="field" data-field="manual-postcode">
+          <label for="pg-m-postcode">Postcode</label>
+          <input id="pg-m-postcode" type="text" value="${escapeHTML(state.manualAddress.postcode)}" autocomplete="postal-code" placeholder="SW10 0LE" />
+          <div class="err">Enter a valid UK postcode</div>
+        </div>
+        <div style="text-align:center;">
+          <button class="btn-text" id="btn-pg-postcode-search">Use postcode lookup instead</button>
+        </div>
+      </div>
+    `}
+  `;
+
+  if (!state.addressManual) {
+    const inp = document.getElementById('pg-postcode');
+    inp.addEventListener('input', e => { state.postcodeQuery = e.target.value; });
+    inp.addEventListener('keydown', e => { if (e.key === 'Enter') doPageAddressLookup(root); });
+    document.getElementById('btn-pg-lookup').addEventListener('click', () => doPageAddressLookup(root));
+    document.getElementById('btn-pg-manual').addEventListener('click', () => {
+      state.addressManual = true;
+      renderDeliveryAddress(root);
+    });
+    document.getElementById('btn-use-gp-postcode')?.addEventListener('click', () => {
+      state.postcodeQuery = gpPostcode();
+      renderDeliveryAddress(root);
+      doPageAddressLookup(root);
+    });
+    if (state.addressOptions.length) renderPageAddressOptions(root);
+  } else {
+    const bind = (id, k) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.addEventListener('input', () => { state.manualAddress[k] = el.value; el.closest('.field')?.classList.remove('error'); });
+    };
+    bind('pg-m-line1', 'line1');
+    bind('pg-m-line2', 'line2');
+    bind('pg-m-city', 'city');
+    bind('pg-m-county', 'county');
+    bind('pg-m-postcode', 'postcode');
+
+    document.getElementById('btn-pg-postcode-search').addEventListener('click', () => {
+      state.addressManual = false;
+      renderDeliveryAddress(root);
+    });
+
+    const saveBtn = document.createElement('button');
+    saveBtn.className = 'btn btn-primary btn-block';
+    saveBtn.textContent = 'Save address';
+    saveBtn.style.marginTop = '16px';
+    saveBtn.addEventListener('click', () => {
+      if (validateManualAddress(true)) {
+        const a = state.manualAddress;
+        state.address = [a.line1, a.line2, a.city, a.county, a.postcode].filter(Boolean).join(', ');
+        state.addressManual = false;
+        renderDeliveryAddress(root);
+        renderFooter();
+      }
+    });
+    root.appendChild(saveBtn);
+  }
+}
+
+function doPageAddressLookup(root) {
+  const raw = (state.postcodeQuery || '').trim();
+  if (!raw) {
+    showToast('Enter a postcode', 'error');
+    root.querySelector('[data-field="postcode"]')?.classList.add('error');
+    return;
+  }
+  if (!/^[A-Z]{1,2}\d[\dA-Z]?\s*\d[A-Z]{2}$/i.test(raw)) {
+    showToast("That doesn't look like a UK postcode", 'error');
+    root.querySelector('[data-field="postcode"]')?.classList.add('error');
+    return;
+  }
+  const results = document.getElementById('pg-lookup-results');
+  if (results) results.innerHTML = renderSkeletonList(4);
+  setTimeout(() => {
+    state.addressOptions = findAddresses(raw);
+    renderPageAddressOptions(root);
+  }, 700);
+}
+
+function renderPageAddressOptions(root) {
+  const results = document.getElementById('pg-lookup-results');
+  if (!results) return;
+  if (!state.addressOptions.length) {
+    results.innerHTML = `
+      <div class="empty">
+        <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <div class="empty-title">No addresses found</div>
+        <div class="empty-text">Try a different postcode, or enter manually.</div>
+      </div>
+    `;
+    return;
+  }
+  results.innerHTML = `
+    <div class="section-h">${state.addressOptions.length} addresses found</div>
+    <div class="suggestions">
+      ${state.addressOptions.map(a => `
+        <div class="suggestion" data-address="${escapeHTML(a)}">${escapeHTML(a)}</div>
+      `).join('')}
+    </div>
+  `;
+  results.querySelectorAll('[data-address]').forEach(el => {
+    el.addEventListener('click', () => {
+      state.address = el.dataset.address;
+      renderDeliveryAddress(root);
+      renderFooter();
     });
   });
-  root.querySelectorAll('[data-edit-overlay]').forEach(el => {
-    el.addEventListener('click', e => {
-      e.stopPropagation();
-      openOverlay(el.dataset.editOverlay);
+}
+
+function renderFindStore(root) {
+  root.innerHTML = `
+    <div style="margin:0 -24px;padding:24px 24px 0;width:calc(100% + 48px);box-sizing:border-box;">
+      <p style="font-size:24px;font-weight:400;line-height:32px;letter-spacing:0.2px;color:var(--bod-navy);margin:0 0 4px;">Find a Boots store</p>
+      <p style="font-size:14px;color:var(--bod-navy);margin:8px 0 0;line-height:20px;">Find Boots pharmacies that can dispense your treatment.</p>
+    </div>
+
+    <div style="margin-top:24px;display:flex;flex-direction:column;gap:12px;">
+      <button type="button" class="location-btn" id="btn-pg-location">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
+        Use my current location
+      </button>
+
+      ${gpPostcodeChipHTML()}
+
+      <div class="postcode-row">
+        <div class="field has-icon" data-field="store-postcode" style="margin:0;">
+          <label for="pg-store-postcode">Postcode</label>
+          <span class="field-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </span>
+          <input id="pg-store-postcode" type="text" value="${escapeHTML(state.storeQuery)}" placeholder="SW10 0LE" />
+        </div>
+        <button class="btn btn-primary" id="btn-pg-store-search" style="height:50px;">Search</button>
+      </div>
+
+      <div id="pg-store-results">${pgStoreResultsHTML()}</div>
+    </div>
+  `;
+
+  const inp = document.getElementById('pg-store-postcode');
+  inp.addEventListener('input', e => { state.storeQuery = e.target.value; });
+  inp.addEventListener('keydown', e => { if (e.key === 'Enter') doPageStoreSearch(root); });
+  document.getElementById('btn-pg-store-search').addEventListener('click', () => doPageStoreSearch(root));
+  document.getElementById('btn-pg-location').addEventListener('click', () => {
+    showToast('Locating you…');
+    setTimeout(() => {
+      state.storeQuery = 'SW10 0LE';
+      doPageStoreSearch(root);
+    }, 800);
+  });
+  document.getElementById('btn-use-gp-postcode')?.addEventListener('click', () => {
+    state.storeQuery = gpPostcode();
+    renderFindStore(root);
+    doPageStoreSearch(root);
+  });
+  bindPageStoreSelect(root);
+}
+
+function pgStoreResultsHTML() {
+  if (!state.storeQuery) {
+    return `
+      <div class="empty">
+        <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <div class="empty-title">Search to see stores</div>
+        <div class="empty-text">Enter a postcode or use your location.</div>
+      </div>
+    `;
+  }
+  if (!state.storeResults.length) {
+    return `
+      <div class="empty">
+        <div class="empty-title">No stores found nearby</div>
+        <div class="empty-text">Try a different postcode.</div>
+      </div>
+    `;
+  }
+  return `
+    <div class="section-h">${state.storeResults.length} stores near ${escapeHTML(state.storeQuery)}</div>
+    <div class="store-list">
+      ${state.storeResults.map(s => `
+        <div class="card store-card selectable ${state.store?.id === s.id ? 'selected' : ''}" data-store-id="${s.id}">
+          <span class="radio"></span>
+          <div class="store-content">
+            <div class="store-name">${s.name}</div>
+            <div class="store-addr">${escapeHTML(s.addr)}</div>
+            <div class="store-meta">
+              <span>${s.distance} mi away</span>
+              <span>·</span>
+              <span class="${s.closesIn > 60 ? 'open' : 'closed'}">${escapeHTML(s.hours)}</span>
+            </div>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+function doPageStoreSearch(root) {
+  const q = (state.storeQuery || '').trim();
+  if (!q) { showToast('Enter a postcode', 'error'); return; }
+  if (!/^[A-Z]{1,2}\d[\dA-Z]?\s*\d[A-Z]{2}$/i.test(q)) {
+    showToast("That doesn't look like a UK postcode", 'error');
+    return;
+  }
+  const out = document.getElementById('pg-store-results');
+  if (out) out.innerHTML = `
+    <div class="section-h">Searching…</div>
+    <div class="store-list">
+      ${[0,1,2].map(() => `
+        <div class="card store-card">
+          <div class="skel" style="width:22px;height:22px;border-radius:50%;"></div>
+          <div class="store-content">
+            <div class="skel" style="height:16px;width:60%;"></div>
+            <div class="skel" style="height:13px;width:85%;margin-top:8px;"></div>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+  setTimeout(() => {
+    const key = q.toUpperCase().replace(/\s+/g, '').slice(0, 4);
+    state.storeResults = STORE_DB[key.slice(0,4)] || STORE_DB[key.slice(0,3)] || STORE_DB[key.slice(0,2)] || [];
+    state.store = null;
+    const out2 = document.getElementById('pg-store-results');
+    if (out2) out2.innerHTML = pgStoreResultsHTML();
+    bindPageStoreSelect(root);
+    renderFooter();
+  }, 800);
+}
+
+function bindPageStoreSelect(root) {
+  document.querySelectorAll('#pg-store-results [data-store-id]').forEach(el => {
+    el.addEventListener('click', () => {
+      state.store = state.storeResults.find(s => s.id === el.dataset.storeId);
+      const out = document.getElementById('pg-store-results');
+      if (out) out.innerHTML = pgStoreResultsHTML();
+      bindPageStoreSelect(root);
+      renderFooter();
     });
   });
 }
@@ -16137,7 +16668,24 @@ function renderAccountDetails(root) {
           <input class="ca-field-input" id="ca-last" type="text" autocomplete="family-name" placeholder="Last name" value="${escapeHTML(state.contactLastName || '')}" />
         </div>
       </div>
-      <button type="button" class="fnav-next ca-inline-continue" id="ca-details-continue" style="width:100%;flex:none;height:52px;font-weight:400;margin-top:8px;" disabled>Continue</button>
+
+      <!-- Marketing GDPR opt-in -->
+      <div style="border:1px solid var(--bod-line,#e5e5e5);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px;">
+        <p style="font-size:13px;line-height:18px;color:var(--bod-navy);margin:0;">Would you like to receive exclusive deals, inspirational content, news and special offers from the Boots Online Doctor and our family of businesses, including Boots?</p>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:14px;color:var(--bod-navy);">
+            <input type="checkbox" id="gdpr-bod" style="width:18px;height:18px;accent-color:var(--bod-deep-blue,#003d82);cursor:pointer;" ${state.marketingBod ? 'checked' : ''} />
+            Boots Online Doctor
+          </label>
+          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:14px;color:var(--bod-navy);">
+            <input type="checkbox" id="gdpr-boots" style="width:18px;height:18px;accent-color:var(--bod-deep-blue,#003d82);cursor:pointer;" ${state.marketingBoots ? 'checked' : ''} />
+            Boots
+          </label>
+        </div>
+      </div>
+
+      <button type="button" class="fnav-next ca-inline-continue" id="ca-details-continue" style="width:100%;flex:none;height:52px;font-weight:400;margin-top:8px;" disabled>Create account &amp; continue</button>
+      <p style="font-size:12px;line-height:18px;color:#6b7280;margin:-4px 0 8px;text-align:center;">By creating an account, you agree to the Boots Online Doctor <a href="https://www.boots.com/online-doctor/terms-and-conditions" target="_blank" rel="noopener" style="color:var(--bod-deep-blue,#003d82);">terms and conditions</a>. Boots Online Doctor will process your personal data as set out in our <a href="https://www.boots.com/online-doctor/privacy-notice" target="_blank" rel="noopener" style="color:var(--bod-deep-blue,#003d82);">privacy notice</a>.</p>
     </div>
   `;
 
@@ -16157,6 +16705,9 @@ function renderAccountDetails(root) {
   bind('ca-last', 'contactLastName');
   refresh();
 
+  document.getElementById('gdpr-bod')?.addEventListener('change', e => { state.marketingBod = e.target.checked; });
+  document.getElementById('gdpr-boots')?.addEventListener('change', e => { state.marketingBoots = e.target.checked; });
+
   btn?.addEventListener('click', () => {
     if (btn.disabled) return;
     lastDirection = 'forward';
@@ -16164,61 +16715,6 @@ function renderAccountDetails(root) {
     render();
     if (typeof refreshPicker === 'function') refreshPicker();
   });
-}
-
-function renderAccountProcessing(root) {
-  const method = state.signInMethod;
-  const email  = escapeHTML((state.contactEmail || '').trim());
-
-  const cfg = {
-    passkey: {
-      title: 'Setting up your Passkey',
-      body:  'Authorise with your fingerprint or Face ID when prompted.',
-      icon:  `<svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4a8 8 0 0 0-8 8c0 4 1 6 1 6"/><path d="M19 18s1-2 1-6a8 8 0 0 0-8-8"/><path d="M8 12a4 4 0 0 1 8 0c0 3-1 6-1 6"/><path d="M12 12v6"/><path d="M9 16s.5 1.5 1.5 2.5"/></svg>`,
-    },
-    google: {
-      title: 'Connecting to Google',
-      body:  'Signing you in with your Google account.',
-      icon:  `<svg width="36" height="36" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84A11 11 0 0 0 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18A10.97 10.97 0 0 0 1 12c0 1.77.42 3.44 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1A11 11 0 0 0 2.18 7.07l3.66 2.84C6.71 7.31 9.14 5.38 12 5.38z"/></svg>`,
-    },
-    apple: {
-      title: 'Connecting to Apple',
-      body:  'Signing you in with your Apple ID.',
-      icon:  `<svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 12.04c-.03-3.13 2.55-4.63 2.67-4.7-1.46-2.13-3.73-2.43-4.54-2.46-1.93-.2-3.77 1.13-4.75 1.13-1 0-2.49-1.11-4.1-1.08-2.1.03-4.07 1.23-5.15 3.1-2.21 3.83-.56 9.46 1.57 12.55 1.05 1.51 2.29 3.2 3.91 3.14 1.58-.06 2.18-1.02 4.09-1.02 1.91 0 2.45 1.02 4.1.99 1.7-.03 2.78-1.53 3.81-3.06 1.21-1.75 1.71-3.46 1.73-3.55-.04-.02-3.31-1.26-3.34-5.04zm-3.13-9.27c.87-1.05 1.45-2.5 1.29-3.95-1.25.05-2.76.83-3.65 1.88-.81.92-1.51 2.4-1.32 3.81 1.39.11 2.81-.71 3.68-1.74z"/></svg>`,
-    },
-    'magic-link': {
-      title: 'Sending your magic link',
-      body:  email ? `Check your inbox at ${email}` : 'Check your inbox for the sign-in link.',
-      icon:  `<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><polyline points="3 7 12 13 21 7"/></svg>`,
-    },
-  };
-
-  const c = cfg[method] || cfg['magic-link'];
-
-  root.innerHTML = `
-    <div class="processing">
-      <div style="color: var(--navy); margin-bottom: 20px;">${c.icon}</div>
-      <div class="spinner lg dark"></div>
-      <h3>${escapeHTML(c.title)}</h3>
-      <p>${c.body}</p>
-    </div>
-  `;
-
-  // Cancel any previous pending timer (safe re-render guard)
-  if (renderAccountProcessing._cancel) renderAccountProcessing._cancel();
-  let live = true;
-  renderAccountProcessing._cancel = () => { live = false; };
-
-  setTimeout(() => {
-    if (!live || currentStep() !== 'account-processing') return;
-    state.accountCreated = true;
-    // Replace account-processing with fulfilment in history so back from
-    // fulfilment goes to create-account, not another processing loop.
-    history.pop();
-    history.push('fulfilment');
-    lastDirection = 'forward';
-    render();
-  }, 2400);
 }
 
 function renderPayment(root) {
@@ -16711,9 +17207,8 @@ function renderAnalysing(root) {
 
 let _analysingTimer = null;
 function runAnalysing() {
-  // Suppress the auto-advance when the prototype is embedded (journey export)
-  // or when a specific hash route asked for this screen.
-  if (window.EMBED || window.location.hash) return;
+  // Suppress the auto-advance when the prototype is embedded (journey export).
+  if (window.EMBED) return;
   if (_analysingTimer) clearTimeout(_analysingTimer);
   _analysingTimer = setTimeout(() => {
     _analysingTimer = null;
@@ -16722,7 +17217,7 @@ function runAnalysing() {
     lastDirection = 'forward';
     render();
     refreshPicker();
-  }, 3000);
+  }, 2000);
 }
 
 // ---------------------------------------------------------------------------
@@ -17002,6 +17497,9 @@ function renderPhotoCapture(root, opts) {
       </div>
       <div class="cam-shutter-wrap">
         <div class="cam-shutter"><div class="cam-shutter-inner"></div></div>
+      </div>
+      <div style="text-align:center;padding:2px 0 10px;">
+        <button type="button" id="btn-skip-photo-${stateKey}" style="background:none;border:0;padding:6px 16px;cursor:pointer;font:inherit;font-size:13px;color:rgba(255,255,255,0.7);text-decoration:underline;">Skip for now</button>
       </div>`;
 
     // Body photo countdown sequence
@@ -17090,6 +17588,14 @@ function renderPhotoCapture(root, opts) {
       }, 600);
     }, 1800);
 
+    root.querySelector(`#btn-skip-photo-${stateKey}`)?.addEventListener('click', () => {
+      ['_align', '_cap', '_post', '_cd2', '_cd1', '_ai1', '_ai2'].forEach(sfx => {
+        const k = stateKey + sfx;
+        if (_photoTimers[k]) { clearTimeout(_photoTimers[k]); delete _photoTimers[k]; }
+      });
+      const target = nextStep(currentStep());
+      if (target) { lastDirection = 'forward'; history.push(target); render(); }
+    });
   }
 }
 
@@ -17515,21 +18021,20 @@ function jumpToScreen(screen) {
   // deep-linked screens from product onwards.
   if (!state.contactFirstName) state.contactFirstName = 'Alex';
 
-  // Address/store are now overlays on the fulfilment screen - jump there and open
-  if (screen === 'address') {
+  if (screen === 'address' || screen === 'delivery-address') {
     state.fulfilment = 'home';
-    history = ['product', 'upsell', 'product-upsell', 'create-account', 'account-details', 'fulfilment'];
+    history = ['product', 'upsell', 'product-upsell', 'create-account', 'account-details', 'fulfilment', 'delivery-address'];
     lastDirection = 'forward';
     render();
-    requestAnimationFrame(() => openOverlay('address'));
+    refreshPicker();
     return;
   }
-  if (screen === 'store') {
+  if (screen === 'store' || screen === 'find-store') {
     state.fulfilment = 'store';
-    history = ['product', 'upsell', 'product-upsell', 'create-account', 'account-details', 'fulfilment'];
+    history = ['product', 'upsell', 'product-upsell', 'create-account', 'account-details', 'fulfilment', 'find-store'];
     lastDirection = 'forward';
     render();
-    requestAnimationFrame(() => openOverlay('store'));
+    refreshPicker();
     return;
   }
 
@@ -17607,19 +18112,21 @@ function jumpToScreen(screen) {
     'product-upsell':  ['product', 'upsell', 'product-upsell'],
     'create-account':  ['product', 'upsell', 'product-upsell', 'create-account'],
     'account-details':  ['product', 'upsell', 'product-upsell', 'create-account', 'account-details'],
-    'fulfilment':      ['product', 'upsell', 'product-upsell', 'create-account', 'account-details', 'fulfilment'],
-    'payment':         ['product', 'upsell', 'product-upsell', 'create-account', 'account-details', 'fulfilment', 'payment'],
-    'processing':      ['product', 'upsell', 'product-upsell', 'create-account', 'account-details', 'fulfilment', 'payment', 'processing'],
-    'confirmation':    ['product', 'upsell', 'product-upsell', 'create-account', 'account-details', 'fulfilment', 'payment', 'processing', 'confirmation'],
-    'photos-intro':       ['product', 'upsell', 'product-upsell', 'create-account', 'account-details', 'fulfilment', 'payment', 'processing', 'confirmation', 'gp', 'photos-intro'],
-    'photos-front-guide': ['product', 'upsell', 'product-upsell', 'create-account', 'account-details', 'fulfilment', 'payment', 'processing', 'confirmation', 'gp', 'photos-intro', 'photos-front-guide'],
-    'photos-front':       ['product', 'upsell', 'product-upsell', 'create-account', 'account-details', 'fulfilment', 'payment', 'processing', 'confirmation', 'gp', 'photos-intro', 'photos-front-guide', 'photos-front'],
-    'photos-side-guide':  ['product', 'upsell', 'product-upsell', 'create-account', 'account-details', 'fulfilment', 'payment', 'processing', 'confirmation', 'gp', 'photos-intro', 'photos-front-guide', 'photos-front', 'photos-side-guide'],
-    'photos-side':        ['product', 'upsell', 'product-upsell', 'create-account', 'account-details', 'fulfilment', 'payment', 'processing', 'confirmation', 'gp', 'photos-intro', 'photos-front-guide', 'photos-front', 'photos-side-guide', 'photos-side'],
-    'review-submit':      ['product', 'upsell', 'product-upsell', 'create-account', 'account-details', 'fulfilment', 'payment', 'processing', 'confirmation', 'gp', 'photos-intro', 'photos-front-guide', 'photos-front', 'photos-side-guide', 'photos-side', 'review-submit'],
-    'clinician-submit':   ['product', 'upsell', 'product-upsell', 'create-account', 'account-details', 'fulfilment', 'payment', 'processing', 'confirmation', 'gp', 'photos-intro', 'photos-front-guide', 'photos-front', 'photos-side-guide', 'photos-side', 'review-submit', 'clinician-submit'],
-    'submitting':         ['product', 'upsell', 'product-upsell', 'create-account', 'account-details', 'fulfilment', 'payment', 'processing', 'confirmation', 'gp', 'photos-intro', 'photos-front-guide', 'photos-front', 'photos-side-guide', 'photos-side', 'review-submit', 'clinician-submit', 'submitting'],
-    'account':            ['product', 'upsell', 'product-upsell', 'create-account', 'account-details', 'fulfilment', 'payment', 'processing', 'confirmation', 'gp', 'photos-intro', 'photos-front-guide', 'photos-front', 'photos-side-guide', 'photos-side', 'review-submit', 'clinician-submit', 'account'],
+    'fulfilment':         ['product', 'upsell', 'product-upsell', 'create-account', 'account-details', 'fulfilment'],
+    'delivery-address':   ['product', 'upsell', 'product-upsell', 'create-account', 'account-details', 'fulfilment', 'delivery-address'],
+    'find-store':         ['product', 'upsell', 'product-upsell', 'create-account', 'account-details', 'fulfilment', 'find-store'],
+    'payment':            ['product', 'upsell', 'product-upsell', 'create-account', 'account-details', 'fulfilment', 'delivery-address', 'payment'],
+    'processing':         ['product', 'upsell', 'product-upsell', 'create-account', 'account-details', 'fulfilment', 'delivery-address', 'payment', 'processing'],
+    'confirmation':       ['product', 'upsell', 'product-upsell', 'create-account', 'account-details', 'fulfilment', 'delivery-address', 'payment', 'processing', 'confirmation'],
+    'photos-intro':       ['product', 'upsell', 'product-upsell', 'create-account', 'account-details', 'fulfilment', 'delivery-address', 'payment', 'processing', 'confirmation', 'gp', 'photos-intro'],
+    'photos-front-guide': ['product', 'upsell', 'product-upsell', 'create-account', 'account-details', 'fulfilment', 'delivery-address', 'payment', 'processing', 'confirmation', 'gp', 'photos-intro', 'photos-front-guide'],
+    'photos-front':       ['product', 'upsell', 'product-upsell', 'create-account', 'account-details', 'fulfilment', 'delivery-address', 'payment', 'processing', 'confirmation', 'gp', 'photos-intro', 'photos-front-guide', 'photos-front'],
+    'photos-side-guide':  ['product', 'upsell', 'product-upsell', 'create-account', 'account-details', 'fulfilment', 'delivery-address', 'payment', 'processing', 'confirmation', 'gp', 'photos-intro', 'photos-front-guide', 'photos-front', 'photos-side-guide'],
+    'photos-side':        ['product', 'upsell', 'product-upsell', 'create-account', 'account-details', 'fulfilment', 'delivery-address', 'payment', 'processing', 'confirmation', 'gp', 'photos-intro', 'photos-front-guide', 'photos-front', 'photos-side-guide', 'photos-side'],
+    'review-submit':      ['product', 'upsell', 'product-upsell', 'create-account', 'account-details', 'fulfilment', 'delivery-address', 'payment', 'processing', 'confirmation', 'gp', 'photos-intro', 'photos-front-guide', 'photos-front', 'photos-side-guide', 'photos-side', 'review-submit'],
+    'clinician-submit':   ['product', 'upsell', 'product-upsell', 'create-account', 'account-details', 'fulfilment', 'delivery-address', 'payment', 'processing', 'confirmation', 'gp', 'photos-intro', 'photos-front-guide', 'photos-front', 'photos-side-guide', 'photos-side', 'review-submit', 'clinician-submit'],
+    'submitting':         ['product', 'upsell', 'product-upsell', 'create-account', 'account-details', 'fulfilment', 'delivery-address', 'payment', 'processing', 'confirmation', 'gp', 'photos-intro', 'photos-front-guide', 'photos-front', 'photos-side-guide', 'photos-side', 'review-submit', 'clinician-submit', 'submitting'],
+    'account':            ['product', 'upsell', 'product-upsell', 'create-account', 'account-details', 'fulfilment', 'delivery-address', 'payment', 'processing', 'confirmation', 'gp', 'photos-intro', 'photos-front-guide', 'photos-front', 'photos-side-guide', 'photos-side', 'review-submit', 'clinician-submit', 'account'],
   };
   history = stacks[screen] || ['product'];
   lastDirection = 'forward';
@@ -18075,7 +18582,7 @@ const HASH_ROUTES = {
   'q-medical-tbd':    () => { state.medicalStep = 0; jumpToScreen('q-medical-tbd'); },
   'gp':               () => { jumpToScreen('gp'); },
   'disclaimer':       () => { jumpToScreen('disclaimer'); },
-  'loading':          () => { history = ['analysing']; lastDirection = 'forward'; render(); },
+  'loading':          () => { jumpToScreen('analysing'); },
   'product':          () => { jumpToScreen('product'); },
   'pdp':              () => {
     state.viewingProduct = state.viewingProduct || 'mounjaro';
