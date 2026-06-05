@@ -2679,7 +2679,7 @@
     font-size: 14px;
     line-height: 20px;
     letter-spacing: 0.1px;
-    font-weight: 600;
+    font-weight: 400;
     cursor: pointer;
     transition: background .12s ease, color .12s ease, border-color .12s ease;
     display: inline-flex;
@@ -11325,7 +11325,8 @@ function nextStep(step) {
     case 'q-experience':     return 'q-intro';
     case 'q-intro':          return 'q-reasons';
     case 'q-reasons':        return 'disclaimer';
-    case 'disclaimer':       return 'q-height-weight';
+    case 'disclaimer':       return 'photo-id';
+    case 'photo-id':         return 'q-height-weight';
     case 'q-height-weight':  return 'q-gender';
     case 'q-gender':         return 'q-ethnicity';
     case 'q-ethnicity':      return 'q-name';
@@ -11336,8 +11337,7 @@ function nextStep(step) {
     case 'product-details':  return 'upsell';
     case 'upsell':           return 'create-account'; // product-upsell hidden from journey (keep for later)
     case 'product-upsell':   return 'create-account';
-    case 'gp':               return 'photo-id';
-    case 'photo-id':         return 'gp-disclaimer';
+    case 'gp':               return 'gp-disclaimer';
     case 'gp-disclaimer':     return 'photos-intro';
     case 'photos-intro':       return 'photos-front-guide';  // front guide
     case 'photos-front-guide': return 'photos-front';        // take front photo (auto-confirms)
@@ -11697,7 +11697,7 @@ const PHASE_MAP = {
   // Phase 3 — Details
   'confirmation':       { phase: 3, label: 'Your Details',   pct: 10 },
   'gp':                 { phase: 3, label: 'Your Details',   pct: 26, stepTitle: 'Add GP' },
-  'photo-id':           { phase: 3, label: 'Your Details',   pct: 29 },
+  'photo-id':           { phase: 1, label: 'About You',       pct: 53 },
   'gp-disclaimer':      { phase: 3, label: 'Your Details',   pct: 32 },
   'photos-intro':       { phase: 3, label: 'Your Details',   pct: 55 },
   'photos-front-guide': { phase: 3, label: 'Your Details',   pct: 60 },
@@ -11906,19 +11906,19 @@ function render() {
   if (typeof refreshPicker === 'function') refreshPicker();
 }
 
-// Four-phase journey progress (Figma BOD footer): About you → Medical →
-// Treatment & order → Verification. Returns the active phase (1-4), how far
+// Five-phase journey progress (Figma BOD footer): About you → Medical →
+// Treatment → Order → Verification. Returns the active phase (1-6), how far
 // through it the user is (0-100), and the section label shown above the
 // pills. Phase 1 is just q-experience (footer hidden there), so the moment
 // the footer first appears at q-reasons the user is already in phase 2.
 function journeyPhase(step) {
   const PHASES = [
     { label: 'Get started',     steps: ['q-experience'] },
-    { label: 'About You',       steps: ['q-reasons','disclaimer','q-height-weight','q-gender','q-ethnicity','q-name'] },
+    { label: 'About You',       steps: ['q-reasons','disclaimer','photo-id','q-height-weight','q-gender','q-ethnicity','q-name'] },
     { label: 'Medical History', steps: ['q-medical-tbd','analysing'] },
     { label: 'Your Treatment',  steps: ['product','product-details','upsell','product-upsell'] },
     { label: 'Your Order',      steps: ['create-account','account-details','fulfilment','delivery-address','find-store','payment','processing','confirmation'] },
-    { label: 'Your Details',    steps: ['gp','photo-id','gp-disclaimer','photos-intro','photos-front-guide','photos-front','photos-side-guide','photos-side','clinician-submit','submitting','account'] },
+    { label: 'Your Details',    steps: ['gp','gp-disclaimer','photos-intro','photos-front-guide','photos-front','photos-side-guide','photos-side','clinician-submit','submitting','account'] },
   ];
   for (let i = 0; i < PHASES.length; i++) {
     const idx = PHASES[i].steps.indexOf(step);
@@ -11952,7 +11952,7 @@ function renderFooter(step) {
     const phasePct    = jp ? jp.pct   : 0;
     const sectionTitle = (jp && jp.label) || 'Your Treatment';
     let phasesHtml = '<div class="fnav-phases" aria-label="Journey progress">';
-    for (let ph = 1; ph <= 4; ph++) {
+    for (let ph = 1; ph <= 5; ph++) {
       if (ph < activePhase)        phasesHtml += `<div class="fnav-ph fnav-ph--done"><div class="fnav-ph-fill"></div></div>`;
       else if (ph === activePhase) phasesHtml += `<div class="fnav-ph fnav-ph--active"><div class="fnav-ph-fill" style="width:${phasePct}%"></div></div>`;
       else                         phasesHtml += `<div class="fnav-ph"></div>`;
@@ -11996,7 +11996,7 @@ function renderFooter(step) {
     const pct = jp ? jp.pct : 0;
     const sectionTitle = (jp && jp.label) || 'Treatment';
     let pillsHtml = '<div class="fnav-phases">';
-    for (let i = 1; i <= 4; i++) {
+    for (let i = 1; i <= 5; i++) {
       if (i < ph)       pillsHtml += `<div class="fnav-ph fnav-ph--done"><div class="fnav-ph-fill"></div></div>`;
       else if (i === ph) pillsHtml += `<div class="fnav-ph fnav-ph--active"><div class="fnav-ph-fill" style="width:${pct}%"></div></div>`;
       else              pillsHtml += `<div class="fnav-ph"></div>`;
@@ -12042,7 +12042,7 @@ function renderFooter(step) {
     const sectionTitle = (jp && jp.label) || 'Your Details';
     const isBackDisabled = history.length <= 1;
     let phasesHtml = '<div class="fnav-phases" aria-label="Journey progress">';
-    for (let ph = 1; ph <= 4; ph++) {
+    for (let ph = 1; ph <= 5; ph++) {
       if (ph < activePhase)        phasesHtml += `<div class="fnav-ph fnav-ph--done"><div class="fnav-ph-fill"></div></div>`;
       else if (ph === activePhase) phasesHtml += `<div class="fnav-ph fnav-ph--active"><div class="fnav-ph-fill" style="width:${phasePct}%"></div></div>`;
       else                         phasesHtml += `<div class="fnav-ph"></div>`;
@@ -12087,7 +12087,7 @@ function renderFooter(step) {
   if (jp) {
     stepTitleHtml = `<span class="fnav-step-title">${escapeHTML(sectionTitle)}</span>`;
     phasesHtml = '<div class="fnav-phases" aria-label="Journey progress">';
-    for (let ph = 1; ph <= 4; ph++) {
+    for (let ph = 1; ph <= 5; ph++) {
       if (ph < activePhase) {
         phasesHtml += `<div class="fnav-ph fnav-ph--done"><div class="fnav-ph-fill"></div></div>`;
       } else if (ph === activePhase) {
@@ -12269,10 +12269,21 @@ const MOUNJARO_DOSES = [
 ];
 
 function renderLanding(root) {
-  const checkIcon = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
-
   root.innerHTML = `
   <div class="lp">
+
+    <!-- ── Trust bar ── -->
+    <div style="background:#f5f7fb;border-bottom:1px solid var(--bod-line);padding:8px 16px;display:flex;align-items:center;justify-content:space-between;gap:8px;">
+      <div style="display:flex;align-items:center;gap:6px;min-width:0;">
+        <span style="color:#e8a000;font-size:13px;letter-spacing:1px;">★★★★★</span>
+        <span style="font-size:12px;font-weight:700;color:var(--bod-navy);">Excellent</span>
+        <span style="font-size:11px;color:var(--ink-2);">· 1,462 reviews</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:4px;flex-shrink:0;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--bod-deep-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.9a16 16 0 0 0 6.09 6.09l1.04-.93a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        <span style="font-size:11px;color:var(--bod-deep-blue);font-weight:600;">0800 40 20 20</span>
+      </div>
+    </div>
 
     <!-- ── Site header (mirrors live BOD chrome) ── -->
     <div class="lp-sitehead">
@@ -12286,33 +12297,33 @@ function renderLanding(root) {
         <a class="current">Weight loss</a>
         <a>Sexual health</a>
         <a>Acne &amp; skin</a>
-        <a>Women’s health</a>
-        <a>Men’s health</a>
+        <a>Women's health</a>
+        <a>Men's health</a>
         <a>General health</a>
       </div>
+    </div>
+
+    <!-- ── Breadcrumb ── -->
+    <div style="padding:10px 16px;background:#fff;border-bottom:1px solid var(--bod-line);font-size:12px;color:var(--ink-2);">
+      <span>General health</span>
+      <span style="margin:0 6px;">›</span>
+      <span style="color:var(--bod-navy);font-weight:500;">Weight loss</span>
     </div>
 
     <!-- ── Hero ── -->
     <section class="lp-hero" style="padding-bottom:28px;">
       <span class="lp-eyebrow">Weight loss service</span>
-      <h1 style="margin-bottom:10px;">Change starts today</h1>
-      <p class="lp-hero-sub">360° support you can trust to help you lose weight for good.</p>
-      <p class="lp-hero-body">Our weight loss programme combines treatment with expert clinical care, personalised support and practical tools to help you build healthy habits for life.</p>
+      <h1 style="margin-bottom:10px;">Change starts today – 360° support you can trust to help you lose weight for good.</h1>
+      <p class="lp-hero-body">personalised support and practical tools to help you build healthy habits for life.</p>
       <div class="lp-cta-row" style="margin-top:18px;">
-        <button type="button" class="lp-btn lp-btn-primary lp-btn-block" id="landing-get-started" style="height:52px;font-size:15px;border-radius:999px;">Get started</button>
-        <button type="button" class="lp-btn lp-btn-secondary lp-btn-block" style="height:52px;font-size:15px;border-radius:999px;" id="landing-login">Log in to my account</button>
-      </div>
-      <div class="lp-trust" style="margin-top:16px;justify-content:center;">
-        <span class="stars">★★★★★</span>
-        <span>Rated Excellent · 90% patient satisfaction</span>
+        <button type="button" class="lp-btn lp-btn-primary lp-btn-block" id="landing-get-started" style="height:52px;font-size:15px;border-radius:8px;">Get started online</button>
+        <button type="button" class="lp-btn lp-btn-secondary lp-btn-block" style="height:52px;font-size:15px;border-radius:8px;" id="landing-view-service">View our online service</button>
       </div>
     </section>
 
     <!-- ── Our weight loss programme ── -->
     <section style="background:#fff;border-top:1px solid var(--bod-line);padding:28px 20px 24px;">
-      <span class="lp-eyebrow">Our weight loss programme</span>
-      <h2 style="margin-bottom:8px;">More than just medication</h2>
-      <p style="font-size:13px;color:var(--ink-2);line-height:1.5;">A complete programme of treatment, coaching and tools to help you lose weight and keep it off.</p>
+      <h2 style="margin-bottom:16px;">Our weight loss programme</h2>
 
       <div class="lp-feature-full">
         <div class="lp-feature-row">
@@ -12322,6 +12333,7 @@ function renderLanding(root) {
           <div>
             <h3>Evidence-based treatment</h3>
             <p>Access genuine treatment if suitable, alongside help with healthy lifestyle changes to support your goals.</p>
+            <a style="font-size:12px;color:var(--bod-deep-blue);font-weight:600;text-decoration:underline;cursor:pointer;">More about treatment</a>
           </div>
         </div>
         <div class="lp-feature-row">
@@ -12331,6 +12343,7 @@ function renderLanding(root) {
           <div>
             <h3>1-to-1 coaching</h3>
             <p>Work with a health coach on a personalised programme with guidance on nutrition, movement and more.</p>
+            <a style="font-size:12px;color:var(--bod-deep-blue);font-weight:600;text-decoration:underline;cursor:pointer;">More about coaching</a>
           </div>
         </div>
         <div class="lp-feature-row">
@@ -12339,7 +12352,8 @@ function renderLanding(root) {
           </div>
           <div>
             <h3>Dedicated team, 360° support</h3>
-            <p>Get advice from our GPs, pharmacists, nurses, nutrition and wellness experts and coaches.</p>
+            <p>Get advice and encouragement from our GPs, pharmacists, nurses, nutrition and wellness experts and coaches.</p>
+            <a style="font-size:12px;color:var(--bod-deep-blue);font-weight:600;text-decoration:underline;cursor:pointer;">Meet the team</a>
           </div>
         </div>
         <div class="lp-feature-row">
@@ -12351,39 +12365,33 @@ function renderLanding(root) {
             <p>12 extra months of free clinical support when you stop treatment, so you can maintain your goals long-term.</p>
           </div>
         </div>
-      </div>
-
-      <!-- Trust badges -->
-      <div class="lp-trust-row">
-        <div class="lp-trust-badge">
-          <div class="lp-trust-badge-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <div class="lp-feature-row">
+          <div class="lp-feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
           </div>
-          <span>Trusted UK brand</span>
+          <div>
+            <h3>Trusted UK brand</h3>
+            <p>Hassle-free, no appointment needed, with discreet home delivery and Advantage Card points on every order.</p>
+          </div>
         </div>
-        <div class="lp-trust-badge">
-          <div class="lp-trust-badge-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <div class="lp-feature-row">
+          <div class="lp-feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
           </div>
-          <span>1,500+ Boots stores</span>
-        </div>
-        <div class="lp-trust-badge">
-          <div class="lp-trust-badge-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="1"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+          <div>
+            <h3>Here for you, in store</h3>
+            <p>Get advice from your local pharmacist at over 1,500 Boots stores, including Boots online pharmacy advice.</p>
           </div>
-          <span>Discreet home delivery</span>
         </div>
       </div>
 
-      <button type="button" class="lp-btn lp-btn-primary lp-btn-block" id="landing-get-started-2" style="height:52px;font-size:15px;border-radius:999px;">Get started</button>
-      <p style="text-align:center;font-size:12px;color:var(--muted);margin-top:10px;">Got a BOD account? <a id="landing-login-2" style="color:var(--bod-deep-blue);font-weight:600;cursor:pointer;text-decoration:underline;">Log in</a></p>
+      <button type="button" class="lp-btn lp-btn-primary lp-btn-block" id="landing-get-started-2" style="height:52px;font-size:15px;border-radius:8px;margin-top:20px;">View treatments</button>
     </section>
 
     <!-- ── More than medicine ── -->
     <section style="background:#f5f7fb;border-top:1px solid var(--bod-line);padding:28px 20px 24px;">
-      <span class="lp-eyebrow">More than medicine</span>
-      <h2 style="margin-bottom:8px;">Extra resources for your journey</h2>
-      <p style="font-size:13px;color:var(--ink-2);line-height:1.5;margin-bottom:0;">We offer a range of extra resources to help you reach your weight loss goals. Because real results need real support.</p>
+      <h2 style="margin-bottom:6px;">More than medicine</h2>
+      <p style="font-size:13px;color:var(--ink-2);line-height:1.5;margin-bottom:16px;">We offer a range of extra resources to help you reach your weight loss goals. Because real results need real support you can count on.</p>
 
       <div class="lp-resources">
         <div class="lp-resource">
@@ -12393,6 +12401,7 @@ function renderLanding(root) {
           <div>
             <h3>Live webinars</h3>
             <p>Learn from the team and speak to them directly on a range of weight loss topics.</p>
+            <a style="font-size:12px;color:var(--bod-deep-blue);font-weight:600;text-decoration:underline;cursor:pointer;">Sign up for free</a>
           </div>
         </div>
         <div class="lp-resource">
@@ -12402,6 +12411,16 @@ function renderLanding(root) {
           <div>
             <h3>Tracker app</h3>
             <p>Set goals, track habits and follow our 10-week programme – all in our free app.</p>
+            <div style="display:flex;gap:6px;margin-top:6px;">
+              <span style="display:inline-flex;align-items:center;gap:4px;background:var(--bod-navy);color:#fff;border-radius:5px;padding:4px 8px;font-size:10px;font-weight:600;">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+                iPhone
+              </span>
+              <span style="display:inline-flex;align-items:center;gap:4px;background:var(--bod-navy);color:#fff;border-radius:5px;padding:4px 8px;font-size:10px;font-weight:600;">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M6 18c0 .55.45 1 1 1h1v3.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5V19h2v3.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5V19h1c.55 0 1-.45 1-1V8H6v10zM3.5 8C2.67 8 2 8.67 2 9.5v7c0 .83.67 1.5 1.5 1.5S5 17.33 5 16.5v-7C5 8.67 4.33 8 3.5 8zm17 0c-.83 0-1.5.67-1.5 1.5v7c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5v-7c0-.83-.67-1.5-1.5-1.5zm-4.97-5.84l1.3-1.3c.2-.2.2-.51 0-.71-.2-.2-.51-.2-.71 0l-1.48 1.48C14.96 1.23 13.99 1 13 1c-.99 0-1.96.23-2.74.63L8.88.15c-.2-.2-.51-.2-.71 0-.2.2-.2.51 0 .71l1.3 1.3C8.16 3.28 7 5.02 7 7h10c0-1.98-1.16-3.72-2.47-4.84zM11 4H9V3h2v1zm4 0h-2V3h2v1z"/></svg>
+                Android
+              </span>
+            </div>
           </div>
         </div>
         <div class="lp-resource">
@@ -12411,6 +12430,7 @@ function renderLanding(root) {
           <div>
             <h3>Weight Loss 360° podcast</h3>
             <p>Tune in for a deeper dive into topics like sleep, exercise and managing cravings.</p>
+            <a style="font-size:12px;color:var(--bod-deep-blue);font-weight:600;text-decoration:underline;cursor:pointer;">View all episodes</a>
           </div>
         </div>
         <div class="lp-resource">
@@ -12420,6 +12440,7 @@ function renderLanding(root) {
           <div>
             <h3>Exercise videos</h3>
             <p>Gentle, expert-led exercises to help you move more confidently at your own pace.</p>
+            <a style="font-size:12px;color:var(--bod-deep-blue);font-weight:600;text-decoration:underline;cursor:pointer;">View all videos</a>
           </div>
         </div>
       </div>
@@ -12429,35 +12450,39 @@ function renderLanding(root) {
     <div class="lp-social">
       <div class="lp-social-stars">★★★★★</div>
       <p class="lp-social-quote">"This is life changing for me."</p>
-      <p class="lp-social-attr">— Weight loss patient</p>
+      <p class="lp-social-attr">Weight Loss patient</p>
       <div class="lp-social-divider"></div>
       <div class="lp-social-stat">90%</div>
       <p class="lp-social-stat-text">of our Weight Loss patients are happy with our service, from the convenience to the extra care we take.</p>
-      <button type="button" id="landing-get-started-3" style="display:inline-flex;align-items:center;justify-content:center;height:52px;padding:0 32px;border-radius:999px;background:#fff;color:var(--bod-navy);border:0;font:inherit;font-size:15px;font-weight:700;cursor:pointer;">Get started today</button>
+      <a style="font-size:13px;color:rgba(255,255,255,0.8);text-decoration:underline;cursor:pointer;margin-bottom:20px;">See what our patients say</a>
+      <br/>
+      <a style="font-size:13px;color:rgba(255,255,255,0.8);text-decoration:underline;cursor:pointer;">Terms and conditions apply</a>
     </div>
 
     <!-- ── Footer ── -->
     <footer class="lp-footer">
       <div class="lp-footer-grp">
-        <div class="lp-footer-title">Our services</div>
+        <div class="lp-footer-title">Our service</div>
         <ul>
-          <li>Weight loss</li><li>Women’s health</li><li>Men’s health</li>
-          <li>Acne &amp; skin</li><li>Sexual health</li><li>General health</li>
+          <li>About us</li><li>Recent services</li>
         </ul>
       </div>
       <div class="lp-footer-grp">
         <div class="lp-footer-title">About us</div>
         <ul>
-          <li>Meet the team</li><li>Patient guide</li>
-          <li>Terms and conditions</li><li>Privacy policy</li>
+          <li>Boots Digital Health Ltd</li>
+          <li>Commissioner joins the Boots Online Doctor</li>
         </ul>
       </div>
-      <div class="lp-footer-grp">
-        <div class="lp-footer-title">Patient services</div>
-        <ul>
-          <li>FAQs</li><li>Contact us</li>
-          <li>Pick up and delivery</li><li>Store locator</li>
-        </ul>
+      <div style="padding:16px 20px;border-top:1px solid rgba(255,255,255,0.15);display:flex;align-items:center;gap:12px;">
+        <div style="width:44px;height:44px;background:#fff;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--bod-navy)" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.7);line-height:1.4;">
+          <strong style="color:#fff;display:block;margin-bottom:2px;">CareQuality Commission</strong>
+          Rating has been inspected and rated Good
+          <div style="margin-top:2px;">See the report ›</div>
+        </div>
       </div>
       <div class="lp-footer-legal">
         <span class="lp-footer-cqc">Boots Digital Health Ltd is registered with the Care Quality Commission.</span>
@@ -12470,12 +12495,8 @@ function renderLanding(root) {
 
   root.querySelector('#landing-get-started').addEventListener('click', goNext);
   root.querySelector('#landing-get-started-2').addEventListener('click', goNext);
-  root.querySelector('#landing-get-started-3').addEventListener('click', goNext);
-  root.querySelector('#landing-login').addEventListener('click', () => {
-    showToast('Log in flow not built in this prototype');
-  });
-  root.querySelector('#landing-login-2')?.addEventListener('click', () => {
-    showToast('Log in flow not built in this prototype');
+  root.querySelector('#landing-view-service')?.addEventListener('click', () => {
+    showToast('Service overview not built in this prototype');
   });
 }
 
@@ -13730,7 +13751,7 @@ function getClinicalRecommendationHtml() {
         </div>
         <div class="rx-clinician-divider"></div>
         <div class="rx-clinician-body">
-          <p class="rx-clinician-lede">’Wegovy and Mounjaro are both good options for you.’</p>
+          <p class="rx-clinician-lede">'Wegovy and Mounjaro are both good options for you.'</p>
           <p>Both work on the same hormone system to regulate appetite. Mounjaro acts on two hormones (GLP&#x2011;1 and GIP), while Wegovy acts on one (GLP&#x2011;1), both are proven and highly effective.</p>
         </div>
       </div>
@@ -13752,7 +13773,7 @@ function getClinicalRecommendationHtml() {
           ${heartIcon} Based on your cardiovascular history
         </span>
         <div class="rx-clinician-body">
-          <p class="rx-clinician-lede">’I recommend Wegovy based on your cardiovascular history.’</p>
+          <p class="rx-clinician-lede">'I recommend Wegovy based on your cardiovascular history.'</p>
           <p>Wegovy (semaglutide) has strong evidence of additional heart&#x2011;health benefits for people with existing cardiovascular disease. In the SELECT trial (2023), people taking semaglutide had a 20% lower chance of another major event such as a heart attack or stroke.</p>
         </div>
       </div>
@@ -13774,7 +13795,7 @@ function getClinicalRecommendationHtml() {
           ${pillIcon} Based on your sleep health history
         </span>
         <div class="rx-clinician-body">
-          <p class="rx-clinician-lede">’Mounjaro may be the more suitable option for you.’</p>
+          <p class="rx-clinician-lede">'Mounjaro may be the more suitable option for you.'</p>
           <p>Because you have a history of obstructive sleep apnoea, Mounjaro has shown particular benefit in this area. The SURMOUNT&#x2011;OSA trial (2024) showed tirzepatide can significantly improve sleep apnoea severity and symptoms.</p>
         </div>
       </div>
@@ -13881,7 +13902,7 @@ function renderProduct(root) {
         : `<button type="button" class="rx-pc-select" data-select-product="${p.key}">Select ${escapeHTML(p.name)}</button>`;
 
       const quoteHtml = p.clinicianNote ? `
-        <div class="rx-pc-quote"><p>‘${escapeHTML(p.clinicianNote)}’</p></div>
+        <div class="rx-pc-quote"><p>'${escapeHTML(p.clinicianNote)}'</p></div>
       ` : '';
 
       return `
