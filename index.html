@@ -1985,6 +1985,22 @@
     border-width: 1.5px;
     padding: 19.5px 24px;
   }
+  .q-option.loading {
+    position: relative;
+    opacity: 0.7;
+    pointer-events: none;
+  }
+  .spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #ccc;
+    border-top-color: #111;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
 
   /* Q1 experience — dynamic selection feedback card */
   .q-exp-feedback {
@@ -11648,10 +11664,19 @@ function render() {
 
   // In question-mode the progress bar moves to the top — drive its fill from
   // the overall journey percentage, and wire the white back-row button.
-  if (inQuestionMode && progressFill) {
+  // Progress bar starts at Q2 Reasons (step 3), not before
+  if (inQuestionMode && progressFill && !['q-experience', 'right-place'].includes(step)) {
     progressFill.style.width = progressPercent(step) + '%';
     const backTop = document.getElementById('btn-back-top');
     if (backTop) backTop.disabled = history.length <= 1;
+  } else if (progressFill) {
+    progressFill.style.width = '0%';
+  }
+
+  // Hide back button on Q1 Experience and Q1 Reward
+  const backTop = document.getElementById('btn-back-top');
+  if (backTop) {
+    backTop.style.display = ['q-experience', 'right-place'].includes(step) ? 'none' : '';
   }
 
   // Render screen
@@ -11738,8 +11763,22 @@ function renderFooter(step) {
   footer.classList.remove('footer-payment', 'footer-pdp-selected');
 
   // No footer on these screens
-  if (['landing', 'analysing', 'processing', 'account-processing', 'submitting', 'product', 'account', 'review-submit', 'create-account', 'account-details'].includes(step)) {
+  if (['landing', 'analysing', 'processing', 'account-processing', 'submitting', 'product', 'account', 'review-submit', 'create-account', 'account-details', 'q-experience'].includes(step)) {
     footer.style.display = 'none';
+    return;
+  }
+
+  // Q1 Reward gets a simple Continue button, no progress bar
+  if (step === 'right-place') {
+    footer.style.display = 'flex';
+    footer.innerHTML = `
+      <div class="fnav">
+        <div class="fnav-btns">
+          <button class="fnav-next" id="btn-continue-reward">Continue</button>
+        </div>
+      </div>
+    `;
+    document.getElementById('btn-continue-reward')?.addEventListener('click', () => goNext());
     return;
   }
 
@@ -12133,6 +12172,7 @@ function renderQExperience(root) {
     { key: 'before', label: "I've used weight loss medication before" },
   ];
   const sel = state.usedBefore;
+  const isLoading = state.qExpAdvancing;
 
   root.innerHTML = `
     <div style="padding-top: 4px;">
@@ -12141,14 +12181,27 @@ function renderQExperience(root) {
     </div>
     <div class="q-options">
       ${options.map(o => `
-        <div class="q-option ${sel === o.key ? 'selected' : ''}" role="button" tabindex="0" data-experience="${o.key}">${escapeHTML(o.label)}</div>
+        <div class="q-option ${sel === o.key ? 'selected' : ''} ${isLoading && sel === o.key ? 'loading' : ''}" role="button" tabindex="0" data-experience="${o.key}">
+          ${escapeHTML(o.label)}
+          ${isLoading && sel === o.key ? '<div style="position:absolute;right:16px;top:50%;transform:translateY(-50%);" class="spinner"></div>' : ''}
+        </div>
       `).join('')}
     </div>
   `;
   root.querySelectorAll('[data-experience]').forEach(el => {
     el.addEventListener('click', () => {
+      if (state.qExpAdvancing) return;
       state.usedBefore = el.dataset.experience;
+      state.qExpAdvancing = true;
       render();
+      setTimeout(() => {
+        state.qExpAdvancing = false;
+        if (currentStep() !== 'q-experience') return;
+        lastDirection = 'forward';
+        history.push('right-place');
+        render();
+        if (typeof refreshPicker === 'function') refreshPicker();
+      }, 800);
     });
   });
 }
