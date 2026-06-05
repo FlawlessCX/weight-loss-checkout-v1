@@ -10570,10 +10570,9 @@
     <button class="picker-btn" data-jump="photos-front"><span class="num">41</span>Body photos · front</button>
     <button class="picker-btn" data-jump="photos-side-guide"><span class="num">42</span>Body photos · side guide</button>
     <button class="picker-btn" data-jump="photos-side"><span class="num">43</span>Body photos · side</button>
-    <button class="picker-btn" data-jump="review-submit"><span class="num">44</span>Review &amp; submit</button>
-    <button class="picker-btn" data-jump="clinician-submit"><span class="num">45</span>Clinician disclaimer</button>
-    <button class="picker-btn" data-jump="submitting"><span class="num">46</span>Submitting</button>
-    <button class="picker-btn" data-jump="account"><span class="num">47</span>Your account</button>
+    <button class="picker-btn" data-jump="clinician-submit"><span class="num">44</span>Clinician disclaimer</button>
+    <button class="picker-btn" data-jump="submitting"><span class="num">45</span>Submitting</button>
+    <button class="picker-btn" data-jump="account"><span class="num">46</span>Your account</button>
 
     <hr class="picker-divider" />
     <button class="picker-reset" id="picker-reset">Reset flow</button>
@@ -11115,8 +11114,9 @@ const state = {
   accountManualEntry: false,
   showOtherSignin: false,
   idType:         null,         // 'passport' | 'driving' for the ID-verify step
-  idPhoto:        false,        // true once a photo has been "taken"
-  bodyPhotoFront: false,
+  idPhoto:              false,        // true once a photo has been "taken"
+  idPhotoCaptureActive: false,        // true when user clicks "Take Photo"
+  bodyPhotoFront:       false,
   bodyPhotoSide:  false,
   photoConsent:   false,        // user accepted privacy policy on photos-intro
   photoMode:      null,         // 'solo' | 'friend'
@@ -11163,8 +11163,7 @@ function nextStep(step) {
     case 'photos-front-guide': return 'photos-front';        // take front photo (auto-confirms)
     case 'photos-front':       return 'photos-side-guide';   // side guide
     case 'photos-side-guide':  return 'photos-side';         // take side photo (auto-confirms)
-    case 'photos-side':        return 'review-submit';
-    case 'review-submit':    return 'clinician-submit';
+    case 'photos-side':        return 'clinician-submit';
     case 'clinician-submit': return 'submitting';
     case 'submitting':       return 'account';
     case 'account':          return null;
@@ -11291,7 +11290,7 @@ function resetFlow() {
     accountCreated: false,
     signInMethod: null, accountManualEntry: false, showOtherSignin: false,
     idType: null,
-    idPhoto: false,
+    idPhoto: false, idPhotoCaptureActive: false,
     bodyPhotoFront: false,
     bodyPhotoSide: false,
     photoConsent: false,
@@ -11332,7 +11331,6 @@ function validate(step, showErrors = false) {
     case 'photos-side-guide':  return true;
     case 'photos-front':    return !!state.bodyPhotoFront;
     case 'photos-side':     return !!state.bodyPhotoSide;
-    case 'review-submit':        return true;
     case 'clinician-submit':     return !!state.clinicianConsent;
     case 'submitting':          return true;
     case 'account':             return true;
@@ -11480,8 +11478,7 @@ function progressPercent(step) {
     'photos-front':       94,
     'photos-side-guide':  96,
     'photos-side':        97,
-    'review-submit':      99,
-    'clinician-submit':   100,
+      'clinician-submit':   100,
     'submitting':         100,
     'account':         100,
   };
@@ -11527,7 +11524,6 @@ const PHASE_MAP = {
   'photos-side-guide':  { phase: 3, label: 'Your Details',   pct: 65 },
   'photos-front':       { phase: 3, label: 'Your Details',   pct: 74 },
   'photos-side':        { phase: 3, label: 'Your Details',   pct: 84 },
-  'review-submit':      { phase: 3, label: 'Your Details',   pct: 93 },
   'clinician-submit':   { phase: 3, label: 'Your Details',   pct: 99 },
   'submitting':         { phase: 3, label: 'Your Details',   pct: 100 },
   'account':            { phase: 3, label: 'Your Details',   pct: 100 },
@@ -11564,7 +11560,6 @@ const SECTION_LABELS = {
   'photos-front':       'Verification',
   'photos-side-guide':  'Verification',
   'photos-side':        'Verification',
-  'review-submit':      'Verification',
   'clinician-submit':   'Verification',
   'submitting':         'Verification',
   'account':            'Complete',
@@ -11608,7 +11603,6 @@ const APP_TITLES = {
   'photos-front':       BRAND_TITLE,
   'photos-side-guide':  BRAND_TITLE,
   'photos-side':        BRAND_TITLE,
-  'review-submit':      BRAND_TITLE,
   'clinician-submit':   BRAND_TITLE,
   'submitting':         BRAND_TITLE,
   'account':         BRAND_TITLE,
@@ -11711,7 +11705,6 @@ function render() {
     'photos-front':       renderPhotosFront,
     'photos-side-guide':  renderPhotosSideGuide,
     'photos-side':        renderPhotosSide,
-    'review-submit':      renderReviewSubmit,
     'clinician-submit':   renderClinicianSubmit,
     'submitting':         renderSubmitting,
     'account':         renderAccount,
@@ -11744,7 +11737,7 @@ function journeyPhase(step) {
     { label: 'Medical History', steps: ['q-medical-tbd','analysing'] },
     { label: 'Your Treatment',  steps: ['product','product-details','upsell','product-upsell'] },
     { label: 'Your Order',      steps: ['create-account','account-details','account-processing','fulfilment','payment','processing','confirmation'] },
-    { label: 'Your Details',    steps: ['gp','gp-disclaimer','id-verify','photos-intro','photos-front-guide','photos-front','photos-side-guide','photos-side','review-submit','clinician-submit','submitting','account'] },
+    { label: 'Your Details',    steps: ['gp','gp-disclaimer','id-verify','photos-intro','photos-front-guide','photos-front','photos-side-guide','photos-side','clinician-submit','submitting','account'] },
   ];
   for (let i = 0; i < PHASES.length; i++) {
     const idx = PHASES[i].steps.indexOf(step);
@@ -11763,7 +11756,7 @@ function renderFooter(step) {
   footer.classList.remove('footer-payment', 'footer-pdp-selected');
 
   // No footer on these screens
-  if (['landing', 'analysing', 'processing', 'account-processing', 'submitting', 'product', 'account', 'review-submit', 'create-account', 'account-details', 'q-experience'].includes(step)) {
+  if (['landing', 'analysing', 'processing', 'account-processing', 'submitting', 'product', 'account', 'create-account', 'account-details', 'q-experience'].includes(step)) {
     footer.style.display = 'none';
     return;
   }
@@ -16955,18 +16948,28 @@ function renderPhotoCapture(root, opts) {
 }
 
 function renderIdVerify(root) {
-  // ID type is auto-detected by AI — no manual selection needed
-  root.innerHTML = `
-    ${bodHeadingBand("ID Verification", "We need a photo of either your UK Driving Licence or British Passport so that we can verify your identity.")}
-    <div id="photo-capture-zone"></div>
-  `;
-
-  const zone = root.querySelector('#photo-capture-zone');
-  renderPhotoCapture(zone, {
-    type: 'id',
-    stateKey: 'idPhoto',
-    title: 'ID Document',
-  });
+  // If user hasn't clicked Take Photo yet, show the button
+  if (!state.idPhotoCaptureActive) {
+    root.innerHTML = `
+      ${bodHeadingBand("ID Verification", "We need a photo of either your UK Driving Licence or British Passport so that we can verify your identity.")}
+      <button type="button" class="fnav-next" id="btn-take-id-photo" style="width:100%;margin-top:24px;">Take Photo</button>
+    `;
+    document.getElementById('btn-take-id-photo')?.addEventListener('click', () => {
+      state.idPhotoCaptureActive = true;
+      render();
+    });
+  } else {
+    // Show the photo capture interface
+    root.innerHTML = `
+      <div id="photo-capture-zone"></div>
+    `;
+    const zone = root.querySelector('#photo-capture-zone');
+    renderPhotoCapture(zone, {
+      type: 'id',
+      stateKey: 'idPhoto',
+      title: 'ID Document',
+    });
+  }
 }
 
 function renderPhotosIntro(root) {
